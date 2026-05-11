@@ -1,0 +1,299 @@
+‎<!DOCTYPE html>
+‎<html lang="en">
+‎<head>
+‎<meta charset="UTF-8">
+‎<meta name="viewport" content="width=device-width, initial-scale=1.0">
+‎<title>CS ai — Elite Content Strategy Intelligence</title>
+‎<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+‎<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+‎<style>
+‎*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+‎
+‎:root {
+‎  --black: #0A0A0A;
+‎  --surface: #111111;
+‎  --surface2: #161616;
+‎  --surface3: #1c1c1c;
+‎  --border: #242424;
+‎  --border2: #2e2e2e;
+‎  --gold: #D4AF37;
+‎  --gold2: #FFD700;
+‎  --gold-dim: #8a7020;
+‎  --gold-glow: rgba(212, 175, 55, 0.15);
+‎  --gold-glow2: rgba(212, 175, 55, 0.06);
+‎  --white: #F5F0E8;
+‎  --muted: #5a5a5a;
+‎  --muted2: #888;
+‎  --danger: #c0392b;
+‎}
+‎
+‎html { background: var(--black); color: var(--white); font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
+‎
+‎body {
+‎  min-height: 100vh;
+‎  background:
+‎    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,175,55,0.07) 0%, transparent 60%),
+‎    radial-gradient(ellipse 40% 30% at 90% 90%, rgba(212,175,55,0.04) 0%, transparent 50%),
+‎    var(--black);
+‎  overflow-x: hidden;
+‎}
+‎
+‎body::before {
+‎  content: '';
+‎  position: fixed; inset: 0;
+‎  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+‎  pointer-events: none; z-index: 0; opacity: 0.5;
+‎}
+‎
+‎.app { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+‎
+‎header {
+‎  padding: 48px 0 0;
+‎  text-align: center;
+‎  opacity: 0;
+‎  animation: fadeUp 0.8s ease forwards 0.1s;
+‎}
+‎
+‎.logo {
+‎  font-family: 'Cormorant Garamond', serif;
+‎  font-size: 11px;
+‎  font-weight: 600;
+‎  letter-spacing: 0.5em;
+‎  text-transform: uppercase;
+‎  color: var(--gold);
+‎  margin-bottom: 32px;
+‎  display: flex;
+‎  align-items: center;
+‎  justify-content: center;
+‎  gap: 12px;
+‎}
+‎.logo::before, .logo::after {
+‎  content: ''; width: 40px; height: 1px;
+‎  background: linear-gradient(to right, transparent, var(--gold-dim));
+‎}
+‎.logo::after { background: linear-gradient(to left, transparent, var(--gold-dim)); }
+‎
+‎/* UPGRADED: glow pulse on hero title */
+‎.hero-title {
+‎  font-family: 'Cormorant Garamond', serif;
+‎  font-size: clamp(42px, 8vw, 72px);
+‎  font-weight: 300;
+‎  line-height: 1.05;
+‎  letter-spacing: -0.01em;
+‎  color: var(--white);
+‎  margin-bottom: 12px;
+‎  animation: fadeUp 1s ease, glowPulse 4s ease infinite;
+‎}
+‎
+‎.hero-title em { font-style: italic; color: var(--gold); font-weight: 300; }
+‎
+‎@keyframes glowPulse {
+‎  0%, 100% { text-shadow: 0 0 0px rgba(212,175,55,0); }
+‎  50% { text-shadow: 0 0 30px rgba(212,175,55,0.12); }
+‎}
+‎
+‎.hero-sub {
+‎  font-size: 14px;
+‎  font-weight: 300;
+‎  color: var(--muted2);
+‎  letter-spacing: 0.05em;
+‎  margin-bottom: 48px;
+‎  line-height: 1.6;
+‎}
+‎
+‎/* PROGRESS */
+‎.progress-wrap { margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; }
+‎.progress-track { display: flex; align-items: center; gap: 0; position: relative; }
+‎.progress-line { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border2); transform: translateY(-50%); z-index: 0; }
+‎.progress-fill { position: absolute; top: 50%; left: 0; height: 1px; background: linear-gradient(to right, var(--gold-dim), var(--gold)); transform: translateY(-50%); z-index: 1; transition: width 0.6s ease; }
+‎.step-dot { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border2); background: var(--black); display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 500; color: var(--muted); position: relative; z-index: 2; transition: all 0.4s ease; flex-shrink: 0; }
+‎.step-spacer { flex: 1; }
+‎.step-dot.active { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 16px var(--gold-glow), 0 0 4px rgba(212,175,55,0.3); background: var(--surface); }
+‎.step-dot.done { border-color: var(--gold-dim); background: var(--gold-dim); color: var(--black); }
+‎.progress-labels { display: flex; justify-content: space-between; margin-top: 12px; }
+‎.step-label { font-size: 9px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: center; width: 32px; transition: color 0.4s; }
+‎.step-label.active { color: var(--gold); }
+‎
+‎/* STAGE CARD — UPGRADED with backdrop blur and hover glow */
+‎.stage-card {
+‎  background: var(--surface);
+‎  border: 1px solid var(--border);
+‎  border-radius: 2px;
+‎  position: relative;
+‎  overflow: hidden;
+‎  opacity: 0;
+‎  animation: fadeUp 0.6s ease forwards 0.4s;
+‎  backdrop-filter: blur(20px);
+‎  transition: box-shadow 0.5s ease;
+‎}
+‎.stage-card:hover {
+‎  box-shadow: 0 0 40px rgba(212,175,55,0.08), 0 0 120px rgba(212,175,55,0.03);
+‎}
+‎.stage-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent); }
+‎.stage-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 50% 0%, var(--gold-glow2) 0%, transparent 70%); pointer-events: none; }
+‎
+‎/* UPGRADED: stage enter animation */
+‎.stage-enter {
+‎  animation: stageEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+‎}
+‎@keyframes stageEnter {
+‎  from { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(8px); }
+‎  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+‎}
+‎
+‎.stage-header { padding: 36px 40px 24px; border-bottom: 1px solid var(--border); position: relative; }
+‎.stage-number { font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; font-weight: 400; }
+‎.stage-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--white); letter-spacing: -0.01em; margin-bottom: 6px; }
+‎.stage-desc { font-size: 13px; font-weight: 300; color: var(--muted2); line-height: 1.6; }
+‎.stage-body { padding: 32px 40px; }
+‎
+‎/* FORM */
+‎.field { margin-bottom: 24px; }
+‎.field label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+‎.field input, .field textarea, .field select { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 2px; color: var(--white); font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 300; padding: 14px 16px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; }
+‎.field textarea { resize: none; height: 100px; line-height: 1.6; }
+‎.field select { cursor: pointer; }
+‎.field input::placeholder, .field textarea::placeholder { color: var(--muted); }
+‎.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 1px rgba(212,175,55,0.1), 0 0 20px rgba(212,175,55,0.05); }
+‎.field-hint { font-size: 11px; color: var(--muted); margin-top: 6px; font-weight: 300; }
+‎.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+‎
+‎/* UPGRADED: Strategy Grid Output */
+‎.ai-output { display: none; background: var(--surface3); border: 1px solid var(--border2); border-left: 2px solid var(--gold-dim); border-radius: 2px; padding: 24px; margin-top: 24px; }
+‎.ai-output.visible { display: block; animation: fadeUp 0.5s ease; }
+‎.ai-output-label { font-size: 9px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+‎.ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse-dot 2s ease infinite; }
+‎@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+‎
+‎.strategy-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
+‎.strategy-block { background: linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid var(--border2); padding: 20px; position: relative; overflow: hidden; }
+‎.strategy-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+‎.strategy-block-title { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+‎.strategy-block-content { font-size: 13px; line-height: 1.8; color: var(--white); font-weight: 300; white-space: pre-wrap; }
+‎
+‎/* LOADING */
+‎.loading-state { display: none; align-items: center; gap: 12px; padding: 20px 0; color: var(--muted2); font-size: 13px; font-weight: 300; font-style: italic; }
+‎.loading-state.visible { display: flex; }
+‎.spinner { width: 18px; height: 18px; border: 1px solid var(--border2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+‎@keyframes spin { to { transform: rotate(360deg); } }
+‎
+‎/* BUTTONS */
+‎.btn-row { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+‎.btn-primary { flex: 1; padding: 16px 24px; background: var(--gold); color: var(--black); border: none; border-radius: 2px; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
+‎.btn-primary:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(212,175,55,0.25); }
+‎.btn-primary:active { transform: translateY(0); }
+‎.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+‎.btn-secondary { padding: 16px 24px; background: transparent; color: var(--muted2); border: 1px solid var(--border2); border-radius: 2px; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+‎.btn-secondary:hover { border-color: var(--muted2); color: var(--white); }
+‎.btn-generate { padding: 12px 20px; background: transparent; color: var(--gold); border: 1px solid var(--gold-dim); border-radius: 2px; font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 16px; }
+‎.btn-generate:hover { background: var(--gold-glow); border-color: var(--gold); }
+‎.btn-generate:disabled { opacity: 0.4; cursor: not-allowed; }
+‎
+‎/* SUMMARY */
+‎.summary-card { display: none; opacity: 0; }
+‎.summary-card.visible { display: block; animation: fadeUp 0.6s ease forwards; }
+‎.summary-section { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; margin-bottom: 16px; position: relative; overflow: hidden; }
+‎.summary-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold-dim), transparent); }
+‎.summary-section-header { padding: 20px 28px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+‎.summary-stage-badge { font-family: 'Cormorant Garamond', serif; font-size: 10px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; }
+‎.summary-stage-title { font-size: 14px; font-weight: 500; color: var(--white); }
+‎.summary-section-body { padding: 20px 28px; font-size: 13px; font-weight: 300; line-height: 1.8; color: var(--muted2); white-space: pre-wrap; }
+‎.summary-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--white); margin-bottom: 8px; letter-spacing: -0.01em; }
+‎.summary-subtitle { font-size: 13px; color: var(--muted2); font-weight: 300; margin-bottom: 40px; }
+‎.download-row { display: flex; gap: 12px; margin-top: 32px; }
+‎
+‎/* HOMEPAGE */
+‎.homepage { display: flex; flex-direction: column; align-items: center; padding: 60px 0; }
+‎.start-btn { padding: 20px 56px; background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 2px; }
+‎.start-btn::before { content: ''; position: absolute; inset: 0; background: var(--gold-glow); opacity: 0; transition: opacity 0.3s; }
+‎.start-btn:hover::before { opacity: 1; }
+‎.start-btn:hover { border-color: var(--gold); box-shadow: 0 0 40px rgba(212,175,55,0.15); }
+‎
+‎.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; width: 100%; margin: 60px 0; }
+‎.feature { background: var(--surface); padding: 28px 24px; }
+‎.feature-icon { font-size: 20px; margin-bottom: 12px; }
+‎.feature-title { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+‎.feature-desc { font-size: 12px; font-weight: 300; color: var(--muted2); line-height: 1.6; }
+‎
+‎.stage-preview { width: 100%; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 48px; }
+‎.stage-preview-item { background: var(--surface); padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+‎.stage-preview-num { font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); width: 32px; flex-shrink: 0; }
+‎.stage-preview-name { font-size: 13px; font-weight: 400; color: var(--white); flex: 1; }
+‎.stage-preview-arrow { color: var(--muted); font-size: 12px; }
+‎
+‎/* STRATEGIC MODE SELECTOR */
+‎.mode-selector { width: 100%; margin-bottom: 40px; }
+‎.mode-label { font-family: 'Cormorant Garamond', serif; font-size: 11px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; text-align: center; display: block; }
+‎.mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+‎.mode-btn { padding: 12px 16px; background: var(--surface); border: 1px solid var(--border2); border-radius: 2px; color: var(--muted2); font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; text-align: center; }
+‎.mode-btn:hover { border-color: var(--gold-dim); color: var(--white); }
+‎.mode-btn.selected { border-color: var(--gold); color: var(--gold); background: var(--gold-glow2); box-shadow: 0 0 12px rgba(212,175,55,0.1); }
+‎
+‎/* ANIMATIONS */
+‎@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+‎
+‎/* GOLD DIVIDER */
+‎.gold-divider { display: flex; align-items: center; gap: 16px; margin: 40px 0; opacity: 0; animation: fadeUp 0.6s ease forwards 0.2s; }
+‎.gold-divider::before, .gold-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--border2), transparent); }
+‎.gold-divider span { font-size: 9px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; font-family: 'Cormorant Garamond', serif; }
+‎
+‎.tag { display: inline-block; padding: 3px 10px; background: var(--gold-glow2); border: 1px solid var(--gold-dim); border-radius: 2px; font-size: 9px; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 24px; }
+‎
+‎@media (max-width: 600px) {
+‎  .stage-header, .stage-body { padding: 24px 20px; }
+‎  .field-row { grid-template-columns: 1fr; }
+‎  .features { grid-template-columns: 1fr; }
+‎  .hero-title { font-size: 36px; }
+‎  .btn-row { flex-direction: column; }
+‎  .mode-grid { grid-template-columns: repeat(2, 1fr); }
+‎}
+‎</style>
+‎</head>
+‎<body>
+‎<div class="app">
+‎  <header>
+‎    <div class="logo">Stratum</div>
+‎    <div id="mainView">
+‎
+‎      <!-- HOMEPAGE -->
+‎      <div class="homepage" id="homePage">
+‎        <div class="tag">Elite Strategic Intelligence</div>
+‎        <h1 class="hero-title">Build Your<br><em>Content Empire</em></h1>
+‎        <p class="hero-sub">Designed for elite creators, visionary founders, and premium digital brands.<br>Seven stages of AI-powered strategic intelligence.</p>
+‎
+‎        <!-- STRATEGIC MODE SELECTOR -->
+‎        <div class="mode-selector">
+‎          <span class="mode-label">Select Your Strategic Mode</span>
+‎          <div class="mode-grid" id="modeGrid">
+‎            <div class="mode-btn" onclick="selectMode(this, 'Luxury Brand')">Luxury Brand</div>
+‎            <div class="mode-btn" onclick="selectMode(this, 'Faceless Empire')">Faceless Empire</div>
+‎            <div class="mode-btn" onclick="selectMode(this, 'AI Founder')">AI Founder</div>
+‎            <div class="mode-btn" onclick="selectMode(this, 'Authority Creator')">Authority Creator</div>
+‎            <div class="mode-btn" onclick="selectMode(this, 'Dark Aesthetic')">Dark Aesthetic</div>
+‎            <div class="mode-btn" onclick="selectMode(this, 'Cinematic Storytelling')">Cinematic</div>
+‎            <div class="mode-btn selected" onclick="selectMode(this, 'High Status Personal Brand')">High Status</div>
+‎          </div>
+‎        </div>
+‎
+‎        <button class="start-btn" onclick="startStrategy()">Begin Your Strategy →</button>
+‎
+‎        <div class="gold-divider" style="width:100%; margin-top:60px;"><span>Seven Stages</span></div>
+‎
+‎        <div class="stage-preview">
+‎          <div class="stage-preview-item"><span class="stage-preview-num">01</span><span class="stage-preview-name">Niche Finder</span><span class="stage-preview-arrow">→</span></div>
+‎          <div class="stage-preview-item"><span class="stage-preview-num">02</span><span class="stage-preview-name">Content Blueprint</span><span class="stage-preview-arrow">→</span></div>
+‎          <div class="stage-preview-item"><span class="stage-preview-num">03</span><span class="stage-preview-name">Caption Generator</span><span class="stage-preview-arrow">→</span></div>
+‎          <div class="stage-preview-item"><span class="stage-preview-num">04</span><span class="stage-preview-name">Hook Formula</span><span class="stage-preview-arrow">→</span></div>
+‎          <div class="stage-preview-item"><span class="stage-preview-num">05</span><span class="stage-preview-name">Content Schedule</span><span class="stage-preview-arrow">→</span></div>
+‎          <div class="stage-preview-item"><span class="stage-preview-num">06</span><span class="stage-preview-name">Monetization Map</span><span class="stage-preview-arrow">→</span></div>
+‎          <div class="stage-preview-item"><span class="stage-preview-num">07</span><span class="stage-preview-name">Automation Setup</span><span class="stage-preview-arrow">→</span></div>
+‎        </div>
+‎
+‎        <div class="features">
+‎          <div class="feature"><div class="feature-icon">◈</div><div class="feature-title">Brand DNA Memory</div><div class="feature-desc">Your brand identity flows through every stage for total coherence</div></div>
+‎          <div class="feature"><div class="feature-icon">◇</div><div class="feature-title">Elite AI Intelligence</div><div class="feature-desc">$25,000 consultant-grade strategy generated in minutes</div></div>
+‎          <div class="feature"><div class="feature-icon">◉</div><div class="feature-title">Premium PDF Export</div><div class="feature-desc">Download your complete blueprint as a luxury document</div></div>
+‎        </div>
+‎      </div>
+‎
+‎      <!--
