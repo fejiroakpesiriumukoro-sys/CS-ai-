@@ -6,7 +6,21 @@
 <title>CS — Build a content routine that actually grows</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
+<style>@media (max-width: 600px) {
+  .hero, .trial-box, .section, .pricing-section {
+    width: 95% !important;
+    padding: 40px 20px !important;
+  }
+  
+  h1 {
+    font-size: 32px !important; /* Makes the giant title fit on a phone */
+  }
+
+  .nav-links {
+    display: none; /* Hides the desktop menu links on small screens */
+  }
+}
+  
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
