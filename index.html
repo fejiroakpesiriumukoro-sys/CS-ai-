@@ -167,8 +167,18 @@ body { min-height: 100vh; overflow-x: hidden; }
 }
 
 /* Button press */
-.btn-trial:active, .nav-pill:active, .tf-generate:active {
+.btn-trial:active, .btn-trial:focus,
+.nav-pill:active, .nav-pill:focus,
+.tf-generate:active, .tf-generate:focus {
   transform: scale(0.98) translateY(0) !important;
+}
+
+/* Mobile touch fix */
+.btn-trial, .nav-pill, .tf-generate, .pwp-btn, .du-btn {
+  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+  touch-action: manipulation;
+  cursor: pointer;
+}
 }
 
 /* Stage row hover animation */
