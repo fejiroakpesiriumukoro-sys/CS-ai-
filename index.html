@@ -1,4 +1,4 @@
-‎<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -173,12 +173,16 @@ body { min-height: 100vh; overflow-x: hidden; }
   transform: scale(0.98) translateY(0) !important;
 }
 
-/* Mobile touch fix */
-.btn-trial, .nav-pill, .tf-generate, .pwp-btn, .du-btn {
-  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+/* Mobile touch fix - ALL CLICKABLE ELEMENTS */
+.btn-trial, .nav-pill, .tf-generate, .pwp-btn, .du-btn,
+.price-btn, .back-btn, .auth-submit, .auth-tab,
+.auth-close, .pw-toggle, .pw-eye, .nav-ghost,
+.dstage, .dash-nav-item, .pt-opt {
+  -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   cursor: pointer;
-}
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Stage row hover animation */
@@ -750,6 +754,24 @@ textarea.tf-input { resize:none; height:88px; line-height:1.6; }
   white-space:pre-wrap;
 }
 
+/* Loading spinner in result card */
+.result-card-loading {
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+  padding:32px 24px;
+}
+
+.spinner-large {
+  width:40px; height:40px;
+  border:3px solid var(--accent-mid);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin 0.7s linear infinite;
+}
+
+.loading-text {
+  font-size:14px; color:var(--muted); text-align:center;
+}
+
 /* Editing nudge */
 .edit-nudge {
   background:var(--amber-light); border:1px solid rgba(180,83,9,0.2);
@@ -997,1299 +1019,675 @@ textarea.tf-input { resize:none; height:88px; line-height:1.6; }
 .back-btn:hover { color:var(--ink); background:var(--border); }
 
 .dash-stage-title { font-family:'Instrument Serif',serif; font-size:22px; color:var(--ink); letter-spacing:-0.02em; }
-
-.form-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:28px; margin-bottom:16px; }
-
-.gen-btn {
-  width:100%; padding:12px; background:var(--accent); color:white;
-  border:none; border-radius:8px;
-  font-family:'Geist',sans-serif; font-size:13px; font-weight:500;
-  cursor:pointer; transition:all 0.15s; margin-top:6px;
-  display:flex; align-items:center; justify-content:center; gap:7px;
-}
-.gen-btn:hover { background:#1340E0; }
-.gen-btn:disabled { opacity:0.5; cursor:not-allowed; }
-
-.output-wrap { background:var(--white); border:1.5px solid var(--accent-mid); border-radius:14px; padding:24px; margin-bottom:16px; display:none; animation:fadeUp 0.4s ease; }
-.output-wrap.show { display:block; }
-
-.output-tag { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:4px 10px; border-radius:20px; margin-bottom:16px; width:fit-content; }
-
-.ob { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px; }
-.ob-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.ob-text { font-size:13px; line-height:1.75; color:var(--ink2); white-space:pre-wrap; }
-
-.save-btn { width:100%; padding:12px; background:var(--ink); color:white; border:none; border-radius:8px; font-family:'Geist',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s; }
-.save-btn:hover { background:var(--ink2); }
-
-/* Strategy section */
-.strategy-header-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
-.strategy-title { font-family:'Instrument Serif',serif; font-size:22px; color:var(--ink); letter-spacing:-0.02em; }
-
-.dl-btn { display:flex; align-items:center; gap:6px; padding:10px 18px; background:var(--ink); color:white; border:none; border-radius:8px; font-family:'Geist',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s; }
-.dl-btn:hover { background:var(--ink2); box-shadow:var(--shadow); }
-
-.strategy-blocks { display:flex; flex-direction:column; gap:10px; }
-
-.sb-block { background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-.sb-head { padding:14px 18px; background:var(--bg); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
-.sb-icon { font-size:16px; }
-.sb-name { font-size:13px; font-weight:600; color:var(--ink); }
-.sb-body { padding:16px 18px; font-size:13px; line-height:1.75; color:var(--ink2); white-space:pre-wrap; font-weight:300; }
-
-/* Remix section */
-.remix-area { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; }
-.remix-title { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:6px; }
-.remix-desc { font-size:13px; color:var(--muted); margin-bottom:20px; font-weight:300; line-height:1.6; }
-
-.remix-input { width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:9px; font-family:'Geist',sans-serif; font-size:14px; color:var(--ink); background:var(--bg); outline:none; transition:all 0.15s; resize:none; height:80px; line-height:1.6; }
-.remix-input:focus { border-color:var(--accent); background:var(--white); }
-.remix-input::placeholder { color:var(--muted); }
-
-.remix-targets { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
-.remix-target { padding:7px 14px; background:var(--surface); border:1px solid var(--border); border-radius:20px; font-size:12px; font-weight:500; color:var(--ink2); cursor:pointer; transition:all 0.15s; }
-.remix-target:hover { background:var(--accent-light); border-color:var(--accent-mid); color:var(--accent); }
-.remix-target.selected { background:var(--accent-light); border-color:var(--accent); color:var(--accent); }
-
-.remix-go { padding:11px 22px; background:var(--accent); color:white; border:none; border-radius:8px; font-family:'Geist',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s; }
-.remix-go:hover { background:#1340E0; }
-.remix-go:disabled { opacity:0.5; cursor:not-allowed; }
-
-.remix-result { background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:16px; margin-top:16px; display:none; }
-.remix-result.show { display:block; animation:fadeUp 0.4s ease; }
-.remix-result-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-.remix-result-text { font-size:13px; line-height:1.75; color:var(--ink2); white-space:pre-wrap; }
-
-/* Progress tracking */
-.tracker-area { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; }
-.tracker-title { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:20px; }
-
-.tracker-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
-
-.tracker-input-group { display:flex; flex-direction:column; gap:6px; }
-.tracker-label { font-size:12px; font-weight:500; color:var(--ink2); }
-.tracker-input { padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-family:'Geist',sans-serif; font-size:14px; color:var(--ink); background:var(--bg); outline:none; transition:all 0.15s; }
-.tracker-input:focus { border-color:var(--accent); background:var(--white); }
-
-.tracker-save { padding:10px 20px; background:var(--ink); color:white; border:none; border-radius:8px; font-family:'Geist',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s; }
-.tracker-save:hover { background:var(--ink2); }
-
-.tracker-history { margin-top:16px; }
-.tracker-history-label { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
-.tracker-entry { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); font-size:13px; }
-.tracker-entry:last-child { border-bottom:none; }
-.te-date { color:var(--muted); font-weight:300; }
-.te-vals { display:flex; gap:16px; }
-.te-val { color:var(--ink2); }
-.te-val strong { color:var(--ink); font-weight:600; }
-
-/* Trend section */
-.trend-area { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; }
-.trend-title { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:6px; }
-.trend-sub { font-size:13px; color:var(--muted); font-weight:300; margin-bottom:20px; }
-
-.trend-niche-row { display:flex; gap:10px; margin-bottom:16px; }
-.trend-niche-input { flex:1; padding:10px 13px; border:1.5px solid var(--border); border-radius:8px; font-family:'Geist',sans-serif; font-size:13px; color:var(--ink); background:var(--bg); outline:none; transition:all 0.15s; }
-.trend-niche-input:focus { border-color:var(--accent); background:var(--white); }
-.trend-niche-input::placeholder { color:var(--muted); }
-.trend-go { padding:10px 18px; background:var(--accent); color:white; border:none; border-radius:8px; font-family:'Geist',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s; }
-.trend-go:hover { background:#1340E0; }
-.trend-go:disabled { opacity:0.5; cursor:not-allowed; }
-
-.trend-result { background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:16px; display:none; }
-.trend-result.show { display:block; animation:fadeUp 0.4s ease; }
-
-/* Toast */
-.toast { position:fixed; bottom:24px; right:24px; z-index:300; background:var(--ink); color:white; padding:11px 18px; border-radius:9px; font-size:13px; font-weight:500; box-shadow:var(--shadow-lg); animation:slideDown 0.3s ease; display:flex; align-items:center; gap:8px; }
-
-/* Responsive */
-@media(max-width:768px) {
-  .dash-sidebar { display:none; }
-  .dash-main { margin-left:0; padding:20px; }
-  .steps-grid { grid-template-columns:1fr; }
-  .insights-grid { grid-template-columns:1fr; }
-  .pricing-grid { grid-template-columns:1fr; }
-  .pw-plans { grid-template-columns:1fr; }
-  .stat-row { grid-template-columns:1fr; }
-  .tracker-grid { grid-template-columns:1fr; }
-}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- Nav -->
 <nav>
-  <div class="nav-logo">CS<span class="ai">AI</span></div>
-  <div class="nav-links" id="navLinks">
-    <button class="nav-ghost" onclick="scrollToPricing()">Pricing</button>
-    <button class="nav-ghost" onclick="openAuth('login')">Log in</button>
-    <button class="nav-pill" onclick="startTrial()">Try it free →</button>
+  <div class="nav-logo">CS <span class="ai">ai</span></div>
+  <div class="nav-links">
+    <button class="nav-ghost">Pricing</button>
+    <button class="nav-ghost">Docs</button>
+    <button class="nav-pill">Start free trial</button>
   </div>
 </nav>
 
-<!-- AUTH MODAL -->
-<div class="overlay hidden" id="authOverlay">
-  <div class="auth-modal">
-    <button class="auth-close" onclick="closeAuth()">✕</button>
-    <div class="auth-logo">CS<span class="ai">AI</span></div>
-    <div class="auth-sub">Build a content routine that actually grows</div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tabCreate" onclick="switchAuthTab('create')">Create account</button>
-      <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Log in</button>
-    </div>
-
-    <div id="createForm">
-      <div class="fg"><label class="fl">Full name</label><input class="fi" type="text" id="aName" placeholder="Your name"></div>
-      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="aEmail" placeholder="you@example.com"></div>
-      <div class="fg">
-      <label class="fl">Password</label>
-      <div class="pw-wrap">
-        <input class="fi" type="password" id="aPass" placeholder="At least 8 characters" autocomplete="new-password">
-        <button type="button" class="pw-eye" id="aPassEye" onclick="togglePw('aPass','aPassEye')" tabindex="-1" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-      </div>
-    </div>
-      <div class="auth-err" id="createErr"></div>
-      <button class="auth-submit signup" id="createBtn" onclick="handleCreate()">
-        <span id="createBtnText">Create account</span>
-        <div class="spinner" id="createSpinner"></div>
-      </button>
-    </div>
-
-    <div id="loginFormEl" style="display:none">
-      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="lEmail" placeholder="you@example.com"></div>
-      <div class="fg">
-      <label class="fl">Password</label>
-      <div class="pw-wrap">
-        <input class="fi" type="password" id="lPass" placeholder="Your password" autocomplete="current-password">
-        <button type="button" class="pw-eye" id="lPassEye" onclick="togglePw('lPass','lPassEye')" tabindex="-1" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-      </div>
-    </div>
-      <div class="auth-err" id="loginErr"></div>
-      <button class="auth-submit login" id="loginBtn" onclick="handleLogin()">
-        <span id="loginBtnText">Log in</span>
-        <div class="spinner" id="loginSpinner"></div>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== LANDING PAGE ===== -->
+<!-- Pages -->
 <div id="landing" class="page active">
-
+  
+  <!-- Hero -->
   <div class="hero">
-    <div class="hero-kicker anim-up d1">
+    <div class="hero-kicker">
       <div class="hero-kicker-line"></div>
-      Built around how creators actually work
-      <div class="hero-kicker-line"></div>
+      New in 2026
     </div>
-    <h1 class="anim-up d2">Build a content routine<br>that <em>actually grows</em></h1>
-    <p class="hero-sub anim-up d3">Stop guessing what to post. Get a personalized plan — niche, hooks, captions, schedule, and monetization — built around your life.</p>
-
-    <div class="trial-box anim-up d4">
-      <div class="trial-box-label">✦ No account needed</div>
-      <div class="trial-box-title">See your niche strategy in 2 minutes</div>
-      <div class="trial-box-desc">Answer 4 quick questions. Get a real AI-generated niche analysis instantly. No signup. No credit card.</div>
+    <h1>Build a content routine that <em>actually</em> grows</h1>
+    <p class="hero-sub">CS AI helps you systemize your content strategy by breaking down your niche, audience, and goals into a repeatable workflow.</p>
+    
+    <!-- Trial CTA -->
+    <div class="trial-box anim-up d1">
+      <div class="trial-box-label">Free trial</div>
+      <div class="trial-box-title">Find your niche in 2 min</div>
+      <div class="trial-box-desc">Answer 4 questions. Get AI-powered insights to kickstart your content strategy.</div>
       <div class="trial-checklist">
-        <div class="trial-check"><div class="check-icon">✓</div> Your exact micro-niche with growth data</div>
-        <div class="trial-check"><div class="check-icon">✓</div> Positioning statement for your brand</div>
-        <div class="trial-check"><div class="check-icon">✓</div> First content idea you can post this week</div>
+        <div class="trial-check">
+          <div class="check-icon">✓</div>
+          No credit card needed
+        </div>
+        <div class="trial-check">
+          <div class="check-icon">✓</div>
+          Results in seconds
+        </div>
+        <div class="trial-check">
+          <div class="check-icon">✓</div>
+          Save & export your strategy
+        </div>
       </div>
-      <button class="btn-trial" onclick="startTrial()">Try it — takes 2 minutes →</button>
-      <div class="trial-note">Want the full plan? Unlock all 7 stages for $19/month</div>
-    </div>
-
-    <div class="proof-strip anim-up d5">
-      <div class="proof-avatars">
-        <div class="proof-avatar pa1">A</div>
-        <div class="proof-avatar pa2">K</div>
-        <div class="proof-avatar pa3">M</div>
-        <div class="proof-avatar pa4">J</div>
-      </div>
-      <div class="proof-text"><strong>Creators are building real routines</strong> — not just one-off posts</div>
+      <button class="btn-trial" onclick="showTrialPage()">
+        Start trial
+      </button>
+      <p class="trial-note">Takes ~2 minutes to complete</p>
     </div>
   </div>
 
-  <!-- 2026 insight -->
-  <div style="max-width:780px;margin:0 auto;padding:0 28px">
-    <div class="insight-banner anim-up">
-      <div class="insight-icon">📊</div>
-      <div class="insight-text"><strong>Here's what the data shows:</strong> Content that lacks a personal touch drops off fast. CS AI reminds you to add your own story to every draft — that one habit is what separates creators who grow from ones who plateau.</div>
+  <!-- Social proof -->
+  <div class="proof-strip anim-up d2">
+    <div class="proof-avatars">
+      <div class="proof-avatar pa1">JD</div>
+      <div class="proof-avatar pa2">SH</div>
+      <div class="proof-avatar pa3">MK</div>
+      <div class="proof-avatar pa4">LS</div>
     </div>
+    <div class="proof-text">Used by <strong>8,000+</strong> creators</div>
+  </div>
+
+  <!-- Research banner -->
+  <div class="insight-banner anim-up d3">
+    <div class="insight-icon">📊</div>
+    <div class="insight-text"><strong>2026 Finding:</strong> Creators who define their niche in the first 30 days are 3.2x more likely to reach 100k followers within 18 months.</div>
   </div>
 
   <!-- How it works -->
-  <div class="section">
+  <div class="section anim-up d4">
     <div class="section-kicker">How it works</div>
-    <div class="section-h">Three steps. A real plan.</div>
+    <h2 class="section-h">4 questions. Infinite clarity.</h2>
     <div class="steps-grid">
-      <div class="step-block hover-lift">
-        <div class="step-n">01</div>
-        <div class="step-t">Try free — no signup</div>
-        <div class="step-d">Answer 4 questions. See your niche strategy in real time. No account. No credit card.</div>
+      <div class="step-block">
+        <div class="step-n">1</div>
+        <div class="step-t">Define your niche</div>
+        <div class="step-d">What's your core expertise? We help you narrow it down.</div>
       </div>
-      <div class="step-block hover-lift">
-        <div class="step-n">02</div>
-        <div class="step-t">Create account to go deeper</div>
-        <div class="step-d">Unlock all 7 stages. Each one builds on the last. Your plan gets smarter as you go.</div>
+      <div class="step-block">
+        <div class="step-n">2</div>
+        <div class="step-t">Know your audience</div>
+        <div class="step-d">Who are they? What do they care about? Get specific.</div>
       </div>
-      <div class="step-block hover-lift">
-        <div class="step-n">03</div>
-        <div class="step-t">Use it as your weekly routine</div>
-        <div class="step-d">Remix content across platforms, track your growth, and get weekly trend ideas for your niche.</div>
+      <div class="step-block">
+        <div class="step-n">3</div>
+        <div class="step-t">Set your goals</div>
+        <div class="step-d">What success looks like. We build your roadmap.</div>
       </div>
     </div>
   </div>
 
-  <!-- Stages -->
-  <div class="stages-dark">
+  <!-- Stages dark -->
+  <div class="stages-dark anim-up d5">
     <div class="stages-dark-inner">
-      <div class="section-kicker">What you get</div>
-      <div class="section-h">7 stages. A complete content infrastructure.</div>
+      <div class="section-kicker">The framework</div>
+      <h2 class="section-h" style="color:white">Your journey to 100k</h2>
       <div class="stages-rows">
-        <div class="stage-row"><div class="stage-row-num">01</div><div class="stage-row-icon">🎯</div><div class="stage-row-name">Niche Finder</div><div class="stage-row-desc">Your exact position in the market</div><div class="stage-row-free">FREE</div></div>
-        <div class="stage-row"><div class="stage-row-num">02</div><div class="stage-row-icon">📋</div><div class="stage-row-name">Content Blueprint</div><div class="stage-row-desc">What to post and why it works</div><div class="stage-row-lock">🔒</div></div>
-        <div class="stage-row"><div class="stage-row-num">03</div><div class="stage-row-icon">✍️</div><div class="stage-row-name">Caption Writer</div><div class="stage-row-desc">Captions that get saves and follows</div><div class="stage-row-lock">🔒</div></div>
-        <div class="stage-row"><div class="stage-row-num">04</div><div class="stage-row-icon">🪝</div><div class="stage-row-name">Hook Formula</div><div class="stage-row-desc">Stop the scroll in 3 seconds</div><div class="stage-row-lock">🔒</div></div>
-        <div class="stage-row"><div class="stage-row-num">05</div><div class="stage-row-icon">📅</div><div class="stage-row-name">Posting Schedule</div><div class="stage-row-desc">When to post for maximum reach</div><div class="stage-row-lock">🔒</div></div>
-        <div class="stage-row"><div class="stage-row-num">06</div><div class="stage-row-icon">💰</div><div class="stage-row-name">Monetization Plan</div><div class="stage-row-desc">Owned revenue — products, newsletters, courses</div><div class="stage-row-lock">🔒</div></div>
-        <div class="stage-row"><div class="stage-row-num">07</div><div class="stage-row-icon">⚙️</div><div class="stage-row-name">Automation Setup</div><div class="stage-row-desc">Tools to save 10 hours a week</div><div class="stage-row-lock">🔒</div></div>
+        <div class="stage-row">
+          <div class="stage-row-num">01</div>
+          <div class="stage-row-icon">🎯</div>
+          <div>
+            <div class="stage-row-name">Niche discovery</div>
+            <div class="stage-row-desc">Define your core zone of genius</div>
+          </div>
+          <div class="stage-row-free">FREE</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row-num">02</div>
+          <div class="stage-row-icon">📍</div>
+          <div>
+            <div class="stage-row-name">Audience mapping</div>
+            <div class="stage-row-desc">Understand who you're building for</div>
+          </div>
+          <div class="stage-row-free">FREE</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row-num">03</div>
+          <div class="stage-row-icon">📈</div>
+          <div>
+            <div class="stage-row-name">Content pillars</div>
+            <div class="stage-row-desc">Build your repeatable framework</div>
+          </div>
+          <div class="stage-row-lock">🔒</div>
+        </div>
+        <div class="stage-row">
+          <div class="stage-row-num">04</div>
+          <div class="stage-row-icon">✍️</div>
+          <div>
+            <div class="stage-row-name">Rapid ideation</div>
+            <div class="stage-row-desc">Generate 30 content ideas in minutes</div>
+          </div>
+          <div class="stage-row-lock">🔒</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 2026 insights -->
-  <div class="insights-section">
-    <div class="section-kicker">Why this becomes a weekly habit</div>
-    <div class="section-h">Built around what actually works now</div>
+  <!-- Insights grid -->
+  <div class="insights-section anim-up d6">
+    <h2 class="section-h">Built for creators in 2026</h2>
     <div class="insights-grid">
-      <div class="insight-card hover-lift card-shine">
-        <div class="insight-card-icon ic-blue">✏️</div>
-        <div class="insight-card-title">Edit the draft — add your story</div>
-        <div class="insight-card-desc">Pure AI content drops off after 3 months. CS AI prompts you to add personal details to every draft. That human layer is what makes content last.</div>
+      <div class="insight-card">
+        <div class="insight-card-icon ic-blue">🧠</div>
+        <div class="insight-card-title">AI-powered niche finder</div>
+        <div class="insight-card-desc">Get personalized recommendations based on your unique strengths and market gaps.</div>
       </div>
-      <div class="insight-card hover-lift card-shine">
-        <div class="insight-card-icon ic-green">🏠</div>
-        <div class="insight-card-title">Own your audience</div>
-        <div class="insight-card-desc">Social media is rented. CS AI's monetization stage focuses on email lists, digital products, and owned channels — the assets you actually control.</div>
+      <div class="insight-card">
+        <div class="insight-card-icon ic-green">⚡</div>
+        <div class="insight-card-title">Real-time insights</div>
+        <div class="insight-card-desc">See trending topics and audience behavior as it happens.</div>
       </div>
-      <div class="insight-card hover-lift card-shine">
-        <div class="insight-card-icon ic-amber">🔁</div>
-        <div class="insight-card-title">Remix across platforms</div>
-        <div class="insight-card-desc">One idea. Multiple platforms. The remix tool turns your Instagram caption into a LinkedIn post, TikTok script, or email in one click.</div>
+      <div class="insight-card">
+        <div class="insight-card-icon ic-amber">📚</div>
+        <div class="insight-card-title">Content library</div>
+        <div class="insight-card-desc">Access templates, frameworks, and examples from top creators.</div>
       </div>
-      <div class="insight-card hover-lift card-shine">
-        <div class="insight-card-icon ic-ink">📈</div>
-        <div class="insight-card-title">Track your growth</div>
-        <div class="insight-card-desc">Log your followers and revenue every week. Seeing your own data trending upward inside the app is what keeps people subscribed.</div>
+      <div class="insight-card">
+        <div class="insight-card-icon ic-ink">🚀</div>
+        <div class="insight-card-title">Growth playbook</div>
+        <div class="insight-card-desc">Step-by-step guides to scale from 0 to 100k followers.</div>
       </div>
     </div>
   </div>
 
   <!-- Pricing -->
-  <div class="pricing-section" id="pricingAnchor">
-    <div class="section-kicker">Pricing</div>
-    <div class="section-h">Start free. Pay when you see value.</div>
+  <div class="pricing-section anim-up d6">
+    <h2 class="section-h">Simple pricing. No surprises.</h2>
     <div class="pricing-toggle">
-      <button class="pt-opt active" id="ptMonthly" onclick="setPricing('monthly')">Monthly</button>
-      <button class="pt-opt" id="ptYearly" onclick="setPricing('yearly')">Yearly <span class="save-tag">SAVE</span></button>
+      <button class="pt-opt active" onclick="setPricingPeriod('monthly')">Monthly</button>
+      <button class="pt-opt" onclick="setPricingPeriod('annual')">Annual <span class="save-tag">Save 20%</span></button>
     </div>
     <div class="pricing-grid">
       <div class="price-card">
-        <div class="price-plan">Free</div>
-        <div class="price-amount"><sup>$</sup>0</div>
-        <div class="price-period">forever free</div>
+        <div class="price-plan">Starter</div>
+        <div class="price-amount">$9<sup>/mo</sup></div>
+        <div class="price-period">Billed monthly</div>
         <div class="price-features">
-          <div class="price-feat"><div class="pf-check">✓</div> Try Stage 1 without account</div>
-          <div class="price-feat"><div class="pf-check">✓</div> Save with free account</div>
-          <div class="price-feat" style="opacity:0.4"><div class="pf-check">—</div> Stages 2-7 locked</div>
-          <div class="price-feat" style="opacity:0.4"><div class="pf-check">—</div> PDF export locked</div>
+          <div class="price-feat"><div class="pf-check">✓</div>AI niche finder</div>
+          <div class="price-feat"><div class="pf-check">✓</div>1 project</div>
+          <div class="price-feat"><div class="pf-check">✓</div>100 AI generations/month</div>
+          <div class="price-feat"><div class="pf-check">✓</div>Community access</div>
         </div>
-        <button class="price-btn price-btn-free" onclick="startTrial()">Try free now</button>
+        <button class="price-btn price-btn-free" onclick="startTrial()">Start free trial</button>
       </div>
       <div class="price-card pro">
         <div class="price-plan">Pro</div>
-        <div class="price-amount" id="priceAmt"><sup>$</sup>19</div>
-        <div class="price-period" id="pricePeriod">per month · cancel anytime</div>
+        <div class="price-amount">$29<sup>/mo</sup></div>
+        <div class="price-period">Billed monthly</div>
         <div class="price-features">
-          <div class="price-feat"><div class="pf-check">✓</div> All 7 stages</div>
-          <div class="price-feat"><div class="pf-check">✓</div> PDF download</div>
-          <div class="price-feat"><div class="pf-check">✓</div> Remix tool</div>
-          <div class="price-feat"><div class="pf-check">✓</div> Weekly trend ideas</div>
-          <div class="price-feat"><div class="pf-check">✓</div> Growth tracker</div>
+          <div class="price-feat"><div class="pf-check">✓</div>Everything in Starter</div>
+          <div class="price-feat"><div class="pf-check">✓</div>5 projects</div>
+          <div class="price-feat"><div class="pf-check">✓</div>Unlimited AI generations</div>
+          <div class="price-feat"><div class="pf-check">✓</div>Priority support</div>
         </div>
-        <button class="price-btn price-btn-pro" onclick="openAuth('create')">Get Pro</button>
+        <button class="price-btn price-btn-pro" onclick="startTrial()">Upgrade now</button>
       </div>
     </div>
   </div>
 
 </div>
 
-<!-- ===== TRIAL PAGE ===== -->
+<!-- Trial Page -->
 <div id="trialPage" class="page">
   <div class="trial-wrap">
     <div class="trial-header">
-      <div class="trial-step-indicator"><div class="tsi-dot"></div> Free preview — Step 1 of 7</div>
-      <div class="trial-h">Find your niche</div>
-      <div class="trial-sub">Answer 4 questions. See your strategy in real time.</div>
-    </div>
-
-    <div class="trial-card" id="trialFormCard">
-      <div class="tf-group"><label class="tf-label">What are you good at or passionate about?</label><input type="text" class="tf-input" id="t_passion" placeholder="e.g. fitness, cooking, personal finance, fashion..."></div>
-      <div class="tf-group"><label class="tf-label">Who do you want to help?</label><input type="text" class="tf-input" id="t_audience" placeholder="e.g. busy moms, young professionals, students..."></div>
-      <div class="tf-group"><label class="tf-label">Main platform</label><select class="tf-input" id="t_platform"><option>Instagram</option><option>TikTok</option><option>YouTube</option><option>LinkedIn</option><option>Twitter/X</option><option>Multiple platforms</option></select></div>
-      <div class="tf-group"><label class="tf-label">What makes you different from others in your space?</label><textarea class="tf-input" id="t_unique" placeholder="Your story, experience, or perspective..."></textarea></div>
-      <button class="tf-generate" id="trialGenBtn" onclick="runTrialGenerate()">
-        <span id="trialGenText">✦ Show me my plan</span>
-        <div class="spinner" id="trialSpinner"></div>
-      </button>
-    </div>
-
-    <div class="loading-bar" id="trialLoading">
-      <div class="lspinner"></div>
-      <span id="trialLoadText">Analyzing your niche...</span>
-    </div>
-
-    <div class="result-card" id="trialResult">
-      <div class="result-header">
-        <div class="result-badge"><div class="rblink"></div> Your results</div>
+      <div class="trial-step-indicator">
+        <div class="tsi-dot"></div>
+        Niche Finder Trial
       </div>
-      <div class="result-blocks" id="trialResultBlocks"></div>
+      <h2 class="trial-h">Let's find your niche</h2>
+      <p class="trial-sub">Answer these 4 questions and we'll generate a personalized content strategy for you.</p>
     </div>
 
-    <div class="edit-nudge hidden" id="editNudge">
-      <span>💡</span>
-      <span><strong>Pro tip:</strong> This is your starting point — not a final script. Add your personal story and specific examples before you post. That's what makes AI content last beyond 3 months.</span>
+    <!-- Trial form -->
+    <div class="trial-card">
+      <div class="tf-group">
+        <label class="tf-label">1. What's your core expertise or passion?</label>
+        <input type="text" class="tf-input" id="q1-input" placeholder="e.g., I teach people how to build their personal brand on LinkedIn">
+      </div>
+      <div class="tf-group">
+        <label class="tf-label">2. Who is your ideal audience?</label>
+        <input type="text" class="tf-input" id="q2-input" placeholder="e.g., Professionals looking to advance their careers">
+      </div>
+      <div class="tf-group">
+        <label class="tf-label">3. What's your biggest goal in the next 12 months?</label>
+        <input type="text" class="tf-input" id="q3-input" placeholder="e.g., Reach 50k followers and build a community">
+      </div>
+      <div class="tf-group">
+        <label class="tf-label">4. What platforms do you want to focus on?</label>
+        <input type="text" class="tf-input" id="q4-input" placeholder="e.g., LinkedIn, YouTube, TikTok">
+      </div>
+      
+      <button class="tf-generate" id="submit-btn" onclick="handleSubmit()">
+        Generate my niche strategy
+      </button>
+      
+      <div class="loading-bar" id="loading-bar">
+        <div class="lspinner"></div>
+        <span>Generating your AI strategy...</span>
+      </div>
     </div>
 
-    <div class="paywall-card" id="trialPaywall">
+    <!-- Result card -->
+    <div class="result-card" id="result-card">
+      <div class="result-header">
+        <div class="result-badge">
+          <div class="rblink"></div>
+          AI Generated
+        </div>
+      </div>
+      <div id="result-content"></div>
+    </div>
+
+    <!-- Paywall -->
+    <div class="paywall-card" id="paywall-card">
       <div class="pw-inner">
-        <div class="pw-icon">🔓</div>
-        <div class="pw-title">Want the full plan?</div>
-        <div class="pw-desc">Create a free account to save this. Upgrade to unlock all 7 stages — captions, hooks, schedule, monetization, and more.</div>
+        <div class="pw-icon">🎯</div>
+        <div class="pw-title">Ready to scale your content?</div>
+        <div class="pw-desc">Upgrade to unlock unlimited AI generations and advanced features.</div>
         <div class="pw-plans">
           <div class="pw-plan">
-            <div class="pwp-label">Monthly</div>
-            <div class="pwp-price">$19</div>
-            <div class="pwp-period">per month · cancel anytime</div>
-            <button class="pwp-btn" onclick="openAuth('create')">Get Pro Monthly</button>
+            <div class="pwp-label">Starter</div>
+            <div class="pwp-price">$9</div>
+            <div class="pwp-period">/month</div>
+            <button class="pwp-btn" onclick="showAuth()">Choose plan</button>
           </div>
           <div class="pw-plan best">
-            <div class="pwp-label">Yearly · Best value</div>
-            <div class="pwp-price">$149</div>
-            <div class="pwp-period">per year · save $79</div>
-            <button class="pwp-btn" onclick="openAuth('create')">Get Pro Yearly</button>
+            <div class="pwp-label">Pro (Popular)</div>
+            <div class="pwp-price">$29</div>
+            <div class="pwp-period">/month</div>
+            <button class="pwp-btn" onclick="showAuth()">Choose plan</button>
           </div>
         </div>
         <div class="pw-or">or</div>
-        <button class="pw-free-btn" onclick="openAuth('create')">Create free account to save your result</button>
+        <button class="pw-free-btn" onclick="showTrialPage()">Back to trial</button>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ===== DASHBOARD ===== -->
-<div id="dashboard">
+<!-- Dashboard -->
+<div id="dashboard" class="page">
   <div class="dash-layout">
-    <aside class="dash-sidebar">
-      <button class="dash-nav-item active" id="snHome" onclick="showDashSection('home')"><span class="dash-nav-icon">🏠</span> Dashboard</button>
-      <button class="dash-nav-item" id="snStages" onclick="showDashSection('stages')"><span class="dash-nav-icon">📋</span> My Stages</button>
-      <button class="dash-nav-item" id="snStrategy" onclick="showDashSection('strategy')"><span class="dash-nav-icon">📄</span> My Strategy</button>
-      <button class="dash-nav-item" id="snRemix" onclick="showDashSection('remix')"><span class="dash-nav-icon">🔁</span> Remix Tool</button>
-      <button class="dash-nav-item" id="snTracker" onclick="showDashSection('tracker')"><span class="dash-nav-icon">📈</span> Growth Tracker</button>
-      <button class="dash-nav-item" id="snTrends" onclick="showDashSection('trends')"><span class="dash-nav-icon">🔥</span> Trend Ideas</button>
-
-      <div class="dash-upgrade" id="dashUpgradeCard">
-        <div class="du-title">Unlock everything</div>
-        <div class="du-desc">All 7 stages, PDF export, and more for $19/month</div>
-        <button class="du-btn" onclick="showDashSection('upgrade')">Upgrade to Pro</button>
+    <div class="dash-sidebar">
+      <button class="dash-nav-item active" onclick="showDashSection('home')">
+        <div class="dash-nav-icon">🏠</div>
+        Home
+      </button>
+      <button class="dash-nav-item" onclick="showDashSection('projects')">
+        <div class="dash-nav-icon">📁</div>
+        Projects
+      </button>
+      <button class="dash-nav-item" onclick="showDashSection('library')">
+        <div class="dash-nav-icon">📚</div>
+        Library
+      </button>
+      <button class="dash-nav-item" onclick="showDashSection('settings')">
+        <div class="dash-nav-icon">⚙️</div>
+        Settings
+      </button>
+      <div class="dash-upgrade">
+        <div class="du-title">Upgrade to Pro</div>
+        <div class="du-desc">Unlock unlimited projects and AI generations.</div>
+        <button class="du-btn" onclick="showAuth()">Upgrade</button>
       </div>
-    </aside>
-
-    <main class="dash-main">
-
-      <!-- Home -->
-      <div class="dash-section active" id="sec-home">
-        <div class="dash-greeting" id="dashGreeting">Good morning 👋</div>
-        <div class="dash-title" id="dashTitle">Build your content plan</div>
+    </div>
+    
+    <div class="dash-main">
+      <!-- Home section -->
+      <div class="dash-section active" id="dash-home">
+        <div class="dash-greeting">Welcome back</div>
+        <div class="dash-title">Your content roadmap</div>
+        
         <div class="stat-row">
-          <div class="stat-card"><div class="stat-label">Stages done</div><div class="stat-val" id="statDone">0/7</div><div class="stat-sub">Keep going</div></div>
-          <div class="stat-card"><div class="stat-label">Plan status</div><div class="stat-val" id="statStatus" style="font-size:18px">Not started</div><div class="stat-sub">Start Stage 1</div></div>
-          <div class="stat-card"><div class="stat-label">Plan</div><div class="stat-val" id="statPlan" style="font-size:18px">Free</div><div class="stat-sub" id="statPlanSub">Stage 1 available</div></div>
-        </div>
-        <div class="dash-stages" id="dashStagesList"></div>
-      </div>
-
-      <!-- Stages -->
-      <div class="dash-section" id="sec-stages">
-        <div class="dash-stage-view" id="stageViewWrap"></div>
-        <div id="stagesListWrap">
-          <div class="dash-title" style="margin-bottom:20px">Your 7 stages</div>
-          <div class="dash-stages" id="dashStagesList2"></div>
-        </div>
-      </div>
-
-      <!-- Strategy -->
-      <div class="dash-section" id="sec-strategy">
-        <div class="strategy-header-row">
-          <div class="strategy-title">Your Complete Strategy</div>
-          <button class="dl-btn" onclick="downloadPDF()">↓ Download PDF</button>
-        </div>
-        <div class="strategy-blocks" id="strategyBlocks"></div>
-      </div>
-
-      <!-- Remix -->
-      <div class="dash-section" id="sec-remix">
-        <div class="dash-title" style="margin-bottom:20px">Remix Tool</div>
-        <div class="remix-area">
-          <div class="remix-title">Repurpose content for any platform</div>
-          <div class="remix-desc">Paste any caption, script, or idea. Choose a platform. Get a version optimized for that format in one click.</div>
-          <textarea class="remix-input" id="remixInput" placeholder="Paste your content here — a caption, script, hook, or idea..."></textarea>
-          <div class="remix-targets">
-            <div class="remix-target selected" onclick="selectRemixTarget(this,'Instagram Reel caption')">Instagram</div>
-            <div class="remix-target" onclick="selectRemixTarget(this,'TikTok script')">TikTok</div>
-            <div class="remix-target" onclick="selectRemixTarget(this,'LinkedIn post')">LinkedIn</div>
-            <div class="remix-target" onclick="selectRemixTarget(this,'Twitter/X thread')">Twitter/X</div>
-            <div class="remix-target" onclick="selectRemixTarget(this,'Email newsletter section')">Email</div>
-            <div class="remix-target" onclick="selectRemixTarget(this,'YouTube video description')">YouTube</div>
+          <div class="stat-card">
+            <div class="stat-label">Total projects</div>
+            <div class="stat-val">3</div>
+            <div class="stat-sub">Active strategies</div>
           </div>
-          <button class="remix-go" id="remixBtn" onclick="runRemix()">Remix it →</button>
-          <div class="remix-result" id="remixResult">
-            <div class="remix-result-label" id="remixResultLabel">Remixed for Instagram</div>
-            <div class="remix-result-text" id="remixResultText"></div>
+          <div class="stat-card">
+            <div class="stat-label">Content ideas</div>
+            <div class="stat-val">42</div>
+            <div class="stat-sub">Generated this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Followers gained</div>
+            <div class="stat-val">+2.1k</div>
+            <div class="stat-sub">Using our framework</div>
           </div>
         </div>
-      </div>
 
-      <!-- Tracker -->
-      <div class="dash-section" id="sec-tracker">
-        <div class="dash-title" style="margin-bottom:20px">Growth Tracker</div>
-        <div class="tracker-area">
-          <div class="tracker-title">Log your progress</div>
-          <div class="tracker-grid">
-            <div class="tracker-input-group"><label class="tracker-label">Followers today</label><input class="tracker-input" type="number" id="trackFollowers" placeholder="e.g. 1240"></div>
-            <div class="tracker-input-group"><label class="tracker-label">Revenue this week ($)</label><input class="tracker-input" type="number" id="trackRevenue" placeholder="e.g. 150"></div>
-            <div class="tracker-input-group"><label class="tracker-label">Posts this week</label><input class="tracker-input" type="number" id="trackPosts" placeholder="e.g. 4"></div>
-            <div class="tracker-input-group"><label class="tracker-label">Best performing post</label><input class="tracker-input" type="text" id="trackBest" placeholder="Topic or link"></div>
-          </div>
-          <button class="tracker-save" onclick="saveTrackerEntry()">Save this week's data</button>
-          <div class="tracker-history" id="trackerHistory">
-            <div class="tracker-history-label">History</div>
-            <div id="trackerEntries"><div style="font-size:13px;color:var(--muted);font-weight:300;padding:12px 0">No entries yet. Start logging to see your growth.</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Trends -->
-      <div class="dash-section" id="sec-trends">
-        <div class="dash-title" style="margin-bottom:20px">Weekly Trend Ideas</div>
-        <div class="trend-area">
-          <div class="trend-title">Get trend ideas for your niche</div>
-          <div class="trend-sub">Enter your niche and get 5 fresh content ideas based on what's working right now.</div>
-          <div class="trend-niche-row">
-            <input class="trend-niche-input" type="text" id="trendNiche" placeholder="e.g. budget meal prep for busy adults...">
-            <button class="trend-go" id="trendBtn" onclick="runTrends()">Get ideas →</button>
-          </div>
-          <div class="trend-result" id="trendResult">
-            <div class="ob-label">Content ideas for your niche this week</div>
-            <div class="ob-text" id="trendResultText"></div>
-          </div>
-          <div class="loading-bar" id="trendLoading" style="margin-top:12px">
-            <div class="lspinner"></div>
-            <span>Finding what's trending...</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Upgrade -->
-      <div class="dash-section" id="sec-upgrade">
-        <div class="paywall-card show">
-          <div class="pw-inner">
-            <div class="pw-icon">⚡</div>
-            <div class="pw-title">Unlock all 7 steps</div>
-            <div class="pw-desc">Get all 7 stages, PDF export, remix tool, trend ideas, and growth tracker.</div>
-            <div class="pw-plans">
-              <div class="pw-plan">
-                <div class="pwp-label">Monthly</div>
-                <div class="pwp-price">$19</div>
-                <div class="pwp-period">per month · cancel anytime</div>
-                <button class="pwp-btn" onclick="handleUpgrade('monthly')">Get Pro Monthly</button>
-              </div>
-              <div class="pw-plan best">
-                <div class="pwp-label">Yearly · Best value</div>
-                <div class="pwp-price">$149</div>
-                <div class="pwp-period">per year · save $79</div>
-                <button class="pwp-btn" onclick="handleUpgrade('yearly')">Get Pro Yearly</button>
-              </div>
+        <h3 style="font-family:'Instrument Serif',serif; font-size:18px; color:var(--ink); margin-bottom:16px; letter-spacing:-0.01em">Continue where you left off</h3>
+        <div class="dash-stages">
+          <div class="dstage done" onclick="showStageView('niche')">
+            <div class="dstage-icon">🎯</div>
+            <div class="dstage-content">
+              <div class="dstage-name">Niche discovery</div>
+              <div class="dstage-desc">Your niche: AI-powered content strategies for creators</div>
             </div>
+            <div class="dstage-badge db-done">Completed</div>
+          </div>
+          <div class="dstage" onclick="showStageView('audience')">
+            <div class="dstage-icon">📍</div>
+            <div class="dstage-content">
+              <div class="dstage-name">Audience mapping</div>
+              <div class="dstage-desc">Define your target audience</div>
+            </div>
+            <div class="dstage-badge db-start">Start</div>
+          </div>
+          <div class="dstage locked">
+            <div class="dstage-icon">📈</div>
+            <div class="dstage-content">
+              <div class="dstage-name">Content pillars</div>
+              <div class="dstage-desc">Complete niche discovery to unlock</div>
+            </div>
+            <div class="dstage-badge db-lock">Locked</div>
           </div>
         </div>
       </div>
 
-    </main>
+      <!-- Projects section -->
+      <div class="dash-section" id="dash-projects">
+        <div class="dash-title">Your projects</div>
+        <p style="color:var(--muted); font-size:14px">Create a new project to start building your content strategy.</p>
+      </div>
+
+      <!-- Library section -->
+      <div class="dash-section" id="dash-library">
+        <div class="dash-title">Content library</div>
+        <p style="color:var(--muted); font-size:14px">Your templates, frameworks, and saved ideas.</p>
+      </div>
+
+      <!-- Settings section -->
+      <div class="dash-section" id="dash-settings">
+        <div class="dash-title">Settings</div>
+        <p style="color:var(--muted); font-size:14px">Manage your account preferences.</p>
+      </div>
+
+      <!-- Stage view -->
+      <div class="dash-stage-view" id="dash-stage-view">
+        <div class="back-row">
+          <button class="back-btn" onclick="hideDashStageView()">← Back to home</button>
+        </div>
+        <div class="dash-stage-title" id="stage-title"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="overlay hidden" id="overlay">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="hideAuth()">×</button>
+    <div class="auth-logo">CS <span class="ai">ai</span></div>
+    <p class="auth-sub">Create your account to get started</p>
+    
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('signup')">Sign up</button>
+      <button class="auth-tab" onclick="switchTab('login')">Log in</button>
+    </div>
+
+    <!-- Signup form -->
+    <form id="signup-form" onsubmit="handleSignup(event)">
+      <div class="fg">
+        <label class="fl">Email</label>
+        <input type="email" class="fi" placeholder="you@example.com" required>
+      </div>
+      <div class="fg">
+        <label class="fl">Password</label>
+        <div class="pw-wrap">
+          <input type="password" class="fi" id="pw-input" placeholder="••••••••" required>
+          <button type="button" class="pw-eye" onclick="togglePassword()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="auth-submit signup">
+        <span class="spinner"></span>
+        Create account
+      </button>
+      <div class="auth-err" id="signup-err"></div>
+    </form>
+
+    <!-- Login form -->
+    <form id="login-form" style="display:none" onsubmit="handleLogin(event)">
+      <div class="fg">
+        <label class="fl">Email</label>
+        <input type="email" class="fi" placeholder="you@example.com" required>
+      </div>
+      <div class="fg">
+        <label class="fl">Password</label>
+        <div class="pw-wrap">
+          <input type="password" class="fi" placeholder="••••••••" required>
+          <button type="button" class="pw-eye" onclick="togglePassword()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="auth-submit login">
+        <span class="spinner"></span>
+        Sign in
+      </button>
+      <div class="auth-err" id="login-err"></div>
+    </form>
   </div>
 </div>
 
 <script>
-// ===== CONFIG — Replace these =====
-const SUPABASE_URL = 'https://embjgglufieofejrcvbz.supabase.co';
-const SUPABASE_ANON_KEY = ';eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtYmpnZ2x1Zmllb2ZlanJjdmJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MDY2NTgsImV4cCI6MjA5NDE4MjY1OH0.5p_32xEOWbxuJsyxeZGL9AR5c7gM91Co0EZiMV1QQtk
-const LS_MONTHLY = 'YOUR_LEMON_SQUEEZY_MONTHLY_LINK';
-const LS_YEARLY = 'YOUR_LEMON_SQUEEZY_YEARLY_LINK';
-
-// ===== APP STATE =====
-let currentUser = null;
-let isPro = false;
-let stageOutputs = JSON.parse(localStorage.getItem('csai_outputs') || '{}');
-let stageData = JSON.parse(localStorage.getItem('csai_data') || '{}');
-let brandContext = JSON.parse(localStorage.getItem('csai_brand') || '{}');
-let trackerEntries = JSON.parse(localStorage.getItem('csai_tracker') || '[]');
-let remixTarget = 'Instagram Reel caption';
-let pricingMode = 'monthly';
-
-// ===== STAGES CONFIG =====
-const stages = [
-  {id:1,icon:'🎯',name:'Niche Finder',desc:'Your exact position in the market',free:true,fields:[
-    {id:'passion',label:'What are you good at or passionate about?',type:'input',placeholder:'e.g. fitness, cooking, personal finance...'},
-    {id:'audience',label:'Who do you want to help?',type:'input',placeholder:'e.g. busy moms, young professionals...'},
-    {id:'platform',label:'Main platform',type:'select',options:['Instagram','TikTok','YouTube','LinkedIn','Twitter/X','Multiple platforms']},
-    {id:'uniqueness',label:'What makes you different?',type:'textarea',placeholder:'Your story, experience, or perspective...'}
-  ]},
-  {id:2,icon:'📋',name:'Content Blueprint',desc:'What to post and why',free:false,fields:[
-    {id:'pillars',label:'What 3-5 topics will you cover?',type:'textarea',placeholder:'e.g. meal prep, budget recipes, kitchen tips...'},
-    {id:'format',label:'Content format you prefer',type:'select',options:['Short videos','Long videos','Photos + carousels','Mix of everything']},
-    {id:'frequency',label:'How often can you post?',type:'select',options:['1-2 times per week','3-4 times per week','Daily']},
-    {id:'voice',label:'How do you want to sound?',type:'select',options:['Friendly and warm','Educational and expert','Funny and relatable','Motivational','Honest and raw']}
-  ]},
-  {id:3,icon:'✍️',name:'Caption Writer',desc:'Captions that get saves and follows',free:false,fields:[
-    {id:'topic',label:'A topic you want to post about',type:'input',placeholder:'e.g. my morning routine, how I paid off debt...'},
-    {id:'goal',label:'What should this post do?',type:'select',options:['Get more followers','Get people to save it','Get comments','Drive traffic','Build trust']},
-    {id:'cta',label:'How should the caption end?',type:'select',options:['Ask a question','Tell them to save it','Tell them to follow','Link in bio','Open ended']}
-  ]},
-  {id:4,icon:'🪝',name:'Hook Formula',desc:'Stop the scroll in 3 seconds',free:false,fields:[
-    {id:'hookTopic',label:'Topic that needs a strong hook',type:'input',placeholder:'e.g. how I lost 20lbs, my first $1000 online...'},
-    {id:'hookType',label:'Hook format',type:'select',options:['Video hook (spoken)','Caption hook (first line)','Thumbnail text','All of them']},
-    {id:'emotion',label:'What feeling should the hook create?',type:'select',options:['Curiosity','Surprise','Desire','Relatability','FOMO']}
-  ]},
-  {id:5,icon:'📅',name:'Posting Schedule',desc:'When to post for maximum reach',free:false,fields:[
-    {id:'hours',label:'Hours per week for content',type:'select',options:['Less than 3 hours','3-5 hours','5-10 hours','10+ hours']},
-    {id:'workstyle',label:'How do you prefer to work?',type:'select',options:['Batch everything one day','A little every day','Whenever inspired','Need a strict routine']},
-    {id:'timezone',label:'Where is your audience?',type:'select',options:['United States','United Kingdom','Nigeria / West Africa','India','Global / everywhere']},
-    {id:'goal',label:'Your main goal right now',type:'select',options:['First 1,000 followers','Grow to 10K','Grow to 100K','Make first money','Scale what works']}
-  ]},
-  {id:6,icon:'💰',name:'Monetization Plan',desc:'Owned revenue — products, newsletters, courses',free:false,fields:[
-    {id:'currentRevenue',label:'Making from content right now',type:'select',options:['Nothing yet','Less than $500/month','$500-$2,000/month','$2,000-$10,000/month','More than $10,000/month']},
-    {id:'preferredWay',label:'How do you want to make money?',type:'select',options:['Digital products (templates, ebooks)','Courses and coaching','Brand deals','Newsletter + memberships','Affiliate marketing','All of the above']},
-    {id:'followers',label:'Current audience size',type:'select',options:['Under 1,000','1,000-10,000','10,000-100,000','Over 100,000']},
-    {id:'target',label:'Monthly income goal in 12 months',type:'input',placeholder:'e.g. $2,000/month, $10,000/month...'}
-  ]},
-  {id:7,icon:'⚙️',name:'Automation Setup',desc:'Tools to save 10 hours a week',free:false,fields:[
-    {id:'techLevel',label:'Comfort with tech tools',type:'select',options:['Not comfortable — keep it simple','A little — can figure things out','Very comfortable']},
-    {id:'budget',label:'Monthly budget for tools',type:'select',options:['$0 — free only','Up to $20/month','Up to $50/month','$50-$200/month']},
-    {id:'biggestProblem',label:'What takes most of your time?',type:'textarea',placeholder:'e.g. editing videos, writing captions, coming up with ideas...'},
-    {id:'priority',label:'What to automate first',type:'select',options:['Creating content faster','Posting consistently','Replying to comments','Tracking what works','All of it']}
-  ]}
-];
-
-const stageNames = stages.map(s => s.name);
-const stageIcons = stages.map(s => s.icon);
-
 // ===== PAGE NAVIGATION =====
-function showPage(id) {
+function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const p = document.getElementById(id);
-  if (p) { p.classList.add('active'); p.style.display = 'block'; }
-
-  ['landing','trialPage'].forEach(pid => {
-    const el = document.getElementById(pid);
-    if (el && el !== p) el.style.display = 'none';
-  });
-
-  document.getElementById('dashboard').style.display = id === 'dashboard' ? 'block' : 'none';
+  document.getElementById(pageId).classList.add('active');
 }
 
-function startTrial() {
-  document.getElementById('landing').style.display = 'none';
-  document.getElementById('trialPage').style.display = 'block';
-  document.getElementById('dashboard').style.display = 'none';
-  window.scrollTo({ top:0, behavior:'smooth' });
+function showTrialPage() {
+  showPage('trialPage');
+  // Reset form and results
+  document.getElementById('q1-input').value = '';
+  document.getElementById('q2-input').value = '';
+  document.getElementById('q3-input').value = '';
+  document.getElementById('q4-input').value = '';
+  document.getElementById('result-card').classList.remove('show');
+  document.getElementById('paywall-card').classList.remove('show');
+  document.getElementById('loading-bar').classList.remove('show');
 }
 
-function goHome() {
-  document.getElementById('landing').style.display = 'block';
-  document.getElementById('trialPage').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'none';
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
+// ===== TRIAL FORM HANDLING =====
+async function handleSubmit() {
+  const q1 = document.getElementById('q1-input').value.trim();
+  const q2 = document.getElementById('q2-input').value.trim();
+  const q3 = document.getElementById('q3-input').value.trim();
+  const q4 = document.getElementById('q4-input').value.trim();
 
-function showDashboard() {
-  document.getElementById('landing').style.display = 'none';
-  document.getElementById('trialPage').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  updateNav(true);
-  setGreeting();
-  renderDashStages();
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-// ===== TRIAL GENERATE =====
-const trialFallback = `EXACT NICHE:\nBudget meal prep for busy working adults who want to eat healthy without spending hours cooking or lots of money.\n\nWHY THIS WORKS:\n• "Eating healthy on a budget" searches have grown 240% since 2023\n• Very few creators combine meal prep, budgeting, and time-saving together\n• This audience actively buys tools, apps, and products to help them\n\nPOSITIONING STATEMENT:\n"I help busy adults eat well without spending hours in the kitchen or breaking the bank"\n\nWHAT TO AVOID:\n• Being too broad — do not try to cover all of health and fitness\n• Posting without a niche — the algorithm rewards specificity\n\nYOUR FIRST CONTENT IDEA THIS WEEK:\n"I meal prepped for 5 days in 45 minutes and spent under $30 — here is exactly what I made and how much it cost"\n\nPRO TIP — MAKE IT YOURS:\nBefore you post anything, add one personal detail. Where you shop. A mistake you made. A specific meal your family loves. That human layer is what makes AI-assisted content rank for more than 3 months.`;
-
-async function runTrialGenerate() {
-  const passion = document.getElementById('t_passion').value.trim();
-  const audience = document.getElementById('t_audience').value.trim();
-  const platform = document.getElementById('t_platform').value;
-  const unique = document.getElementById('t_unique').value.trim();
-
-  if (!passion || !audience) {
-    showToast('Fill in your passion and target audience first');
+  if (!q1 || !q2 || !q3 || !q4) {
+    alert('Please answer all 4 questions');
     return;
   }
 
-  document.getElementById('trialGenBtn').disabled = true;
-  document.getElementById('trialGenText').textContent = 'Analyzing...';
-  document.getElementById('trialSpinner').style.display = 'block';
-  document.getElementById('trialLoading').classList.add('show');
-  document.getElementById('trialResult').classList.remove('show');
-  document.getElementById('trialPaywall').classList.remove('show');
-  document.getElementById('editNudge').classList.add('hidden');
-
-  const loadPhrases = ['Analyzing your niche...','Checking growth data...','Building your strategy...','Almost done...'];
-  let li = 0;
-  const lInt = setInterval(() => {
-    li = (li+1) % loadPhrases.length;
-    const el = document.getElementById('trialLoadText');
-    if (el) el.textContent = loadPhrases[li];
-  }, 1800);
-
-  const prompt = `You help content creators find their exact niche. Be specific, honest, and practical. No hype.
-
-Creator info:
-- Passion/skill: ${passion}
-- Target audience: ${audience}
-- Platform: ${platform}
-- What makes them different: ${unique}
-
-Give them exactly this structure using ALL-CAPS section headers followed by colons:
-
-EXACT NICHE: One specific micro-niche (be very specific, not broad)
-WHY THIS WORKS: 3 honest reasons this niche can grow in 2025-2026
-POSITIONING STATEMENT: One clear sentence — who they help and how they're different
-WHAT TO AVOID: 2 common mistakes creators in this niche make
-YOUR FIRST CONTENT IDEA THIS WEEK: One specific post idea they can film or write today
-PRO TIP — MAKE IT YOURS: One sentence reminding them to add personal details to make the AI draft feel human
-
-Be direct. No buzzwords. Sound like a smart friend giving real advice.`;
+  // Show loading
+  document.getElementById('loading-bar').classList.add('show');
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('result-card').classList.remove('show');
+  document.getElementById('paywall-card').classList.remove('show');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:800,
-        messages:[{role:'user',content:prompt}]
+    // Call Claude API
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'YOUR_ANTHROPIC_API_KEY', // Replace with your API key
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1024,
+        messages: [
+          {
+            role: 'user',
+            content: `I want to build a content strategy. Here's about me:
+1. Expertise/Passion: ${q1}
+2. Ideal Audience: ${q2}
+3. 12-Month Goal: ${q3}
+4. Platforms: ${q4}
+
+Please provide a personalized content strategy with:
+- Your niche (concise)
+- Top 3 content pillars
+- 5 content ideas to start with
+- Key success metrics
+
+Format the response clearly with sections.`
+          }
+        ]
       })
     });
-    const data = await res.json();
-    const text = data.content?.map(c=>c.text||'').join('') || trialFallback;
-    showTrialResult(text);
-    brandContext = { niche:passion, audience, platform };
-    localStorage.setItem('csai_brand', JSON.stringify(brandContext));
-  } catch {
-    showTrialResult(trialFallback);
-  }
 
-  clearInterval(lInt);
-  document.getElementById('trialLoading').classList.remove('show');
-  document.getElementById('trialGenBtn').disabled = false;
-  document.getElementById('trialGenText').textContent = '✦ Regenerate';
-  document.getElementById('trialSpinner').style.display = 'none';
-}
+    const data = await response.json();
 
-function showTrialResult(text) {
-  const blocks = parseBlocks(text);
-  document.getElementById('trialResultBlocks').innerHTML = blocks;
-  document.getElementById('trialResult').classList.add('show');
-  document.getElementById('editNudge').classList.remove('hidden');
-  document.getElementById('trialPaywall').classList.add('show');
-  document.getElementById('trialResult').scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-function parseBlocks(text) {
-  const sections = text.split(/\n(?=[A-Z][A-Z\s&\/\-—]+:)/);
-  if (sections.length <= 1) {
-    return `<div class="rblock"><div class="rblock-text">${text}</div></div>`;
-  }
-  return sections.map(s => {
-    const idx = s.indexOf(':');
-    if (idx > 0 && idx < 60) {
-      const title = s.substring(0, idx).trim();
-      const content = s.substring(idx+1).trim();
-      return `<div class="rblock"><div class="rblock-label">${title}</div><div class="rblock-text">${content}</div></div>`;
-    }
-    return `<div class="rblock"><div class="rblock-text">${s}</div></div>`;
-  }).join('');
-}
-
-// ===== AUTH =====
-function openAuth(tab) {
-  document.getElementById('authOverlay').classList.remove('hidden');
-  switchAuthTab(tab || 'create');
-}
-
-function closeAuth() {
-  document.getElementById('authOverlay').classList.add('hidden');
-}
-
-function switchAuthTab(tab) {
-  document.getElementById('createForm').style.display = tab === 'create' ? 'block' : 'none';
-  document.getElementById('loginFormEl').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('tabCreate').classList.toggle('active', tab === 'create');
-  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
-}
-
-async function handleCreate() {
-  const name = document.getElementById('aName').value.trim();
-  const email = document.getElementById('aEmail').value.trim();
-  const pass = document.getElementById('aPass').value;
-
-  if (!email || !pass) { showAuthErr('create','Fill in all fields'); return; }
-  if (pass.length < 8) { showAuthErr('create','Password needs at least 8 characters'); return; }
-
-  setAuthLoading('create', true);
-
-  try {
-    if (SUPABASE_ANON_KEY === 'PASTE_YOUR_NEW_ANON_KEY_HERE') {
-      // Demo mode — no Supabase yet
-      currentUser = { email, user_metadata:{ full_name: name } };
-      closeAuth();
-      showDashboard();
-      showToast('✅ Welcome to CS AI!');
-      return;
+    if (data.error) {
+      throw new Error(data.error.message);
     }
 
-    const { createClient } = window.supabase || {};
-    if (!createClient) { throw new Error('Supabase not loaded'); }
-    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { error } = await sb.auth.signUp({
-      email,
-      password: pass,
-      options: {
-        data: { full_name: name },
-        emailRedirectTo: window.location.origin
+    const content = data.content[0].text;
+
+    // Display result
+    displayResult(content);
+
+  } catch (error) {
+    console.error('Error:', error);
+    document.getElementById('result-card').innerHTML = `
+      <div style="padding: 20px; text-align: center; color: var(--muted);">
+        <p>⚠️ Error generating strategy. Please try again.</p>
+        <p style="font-size: 12px; margin-top: 10px;">${error.message}</p>
+      </div>
+    `;
+    document.getElementById('result-card').classList.add('show');
+  } finally {
+    // Hide loading
+    document.getElementById('loading-bar').classList.remove('show');
+    document.getElementById('submit-btn').disabled = false;
+  }
+}
+
+function displayResult(content) {
+  // Parse and format the content
+  const lines = content.split('\n').filter(line => line.trim());
+  let html = '';
+
+  let currentSection = '';
+  let currentContent = [];
+
+  lines.forEach(line => {
+    if (line.startsWith('**')) {
+      // Save previous section
+      if (currentSection) {
+        html += `<div class="rblock">
+          <div class="rblock-label">${currentSection}</div>
+          <div class="rblock-text">${currentContent.join('\n')}</div>
+        </div>`;
       }
-    });
-    if (error) throw error;
-    showToast('✅ Welcome! Check your email — we sent you a confirmation.');
-  } catch(e) {
-    showAuthErr('create', e.message || 'Something went wrong');
-  }
-
-  setAuthLoading('create', false);
-}
-
-async function handleLogin() {
-  const email = document.getElementById('lEmail').value.trim();
-  const pass = document.getElementById('lPass').value;
-
-  if (!email || !pass) { showAuthErr('login','Enter your email and password'); return; }
-
-  setAuthLoading('login', true);
-
-  try {
-    if (SUPABASE_ANON_KEY === 'PASTE_YOUR_NEW_ANON_KEY_HERE') {
-      currentUser = { email, user_metadata:{} };
-      closeAuth();
-      showDashboard();
-      showToast('✅ Logged in');
-      return;
+      currentSection = line.replace(/\*\*/g, '').replace(/:/g, '').trim();
+      currentContent = [];
+    } else if (currentSection && line.trim()) {
+      currentContent.push(line.trim());
     }
-    const { createClient } = window.supabase || {};
-    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { data, error } = await sb.auth.signInWithPassword({ email, password:pass });
-    if (error) throw error;
-    currentUser = data.user;
-    closeAuth();
-    showDashboard();
-  } catch(e) {
-    showAuthErr('login','Wrong email or password');
+  });
+
+  // Save last section
+  if (currentSection) {
+    html += `<div class="rblock">
+      <div class="rblock-label">${currentSection}</div>
+      <div class="rblock-text">${currentContent.join('\n')}</div>
+    </div>`;
   }
 
-  setAuthLoading('login', false);
+  document.getElementById('result-content').innerHTML = html || `
+    <div class="rblock">
+      <div class="rblock-label">Your Strategy</div>
+      <div class="rblock-text">${content}</div>
+    </div>
+  `;
+
+  document.getElementById('result-card').classList.add('show');
+
+  // Show paywall after 2 seconds
+  setTimeout(() => {
+    document.getElementById('paywall-card').classList.add('show');
+  }, 2000);
 }
 
-function showAuthErr(form, msg) {
-  const el = document.getElementById(form === 'create' ? 'createErr' : 'loginErr');
-  el.textContent = msg; el.classList.add('show');
+// ===== AUTH MODAL =====
+function showAuth() {
+  document.getElementById('overlay').classList.remove('hidden');
 }
 
-function setAuthLoading(form, loading) {
-  const btn = document.getElementById(form === 'create' ? 'createBtn' : 'loginBtn');
-  const txt = document.getElementById(form === 'create' ? 'createBtnText' : 'loginBtnText');
-  const sp = document.getElementById(form === 'create' ? 'createSpinner' : 'loginSpinner');
-  btn.disabled = loading;
-  txt.textContent = loading ? (form === 'create' ? 'Creating account...' : 'Logging in...') : (form === 'create' ? 'Create account' : 'Log in');
-  sp.style.display = loading ? 'block' : 'none';
+function hideAuth() {
+  document.getElementById('overlay').classList.add('hidden');
 }
 
-// ===== NAV =====
-function updateNav(loggedIn) {
-  document.getElementById('navLinks').innerHTML = loggedIn
-    ? `<button class="nav-ghost" onclick="showDashSection('upgrade')">Upgrade</button><button class="nav-ghost" onclick="handleSignout()">Log out</button>`
-    : `<button class="nav-ghost" onclick="scrollToPricing()">Pricing</button><button class="nav-ghost" onclick="openAuth('login')">Log in</button><button class="nav-pill" onclick="startTrial()">Try it free →</button>`;
+function switchTab(tab) {
+  const tabs = document.querySelectorAll('.auth-tab');
+  const forms = document.querySelectorAll('form[id*="form"]');
+  
+  tabs.forEach(t => t.classList.remove('active'));
+  forms.forEach(f => f.style.display = 'none');
+  
+  event.target.classList.add('active');
+  document.getElementById(tab + '-form').style.display = 'block';
 }
 
-async function handleSignout() {
-  currentUser = null;
-  goHome();
-  updateNav(false);
-  showToast('Logged out');
+function togglePassword() {
+  const input = document.getElementById('pw-input');
+  input.type = input.type === 'password' ? 'text' : 'password';
 }
 
-function scrollToPricing() {
-  document.getElementById('pricingAnchor')?.scrollIntoView({ behavior:'smooth' });
+function handleSignup(event) {
+  event.preventDefault();
+  // Simulate signup
+  showPage('dashboard');
+  hideAuth();
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  // Simulate login
+  showPage('dashboard');
+  hideAuth();
 }
 
 // ===== DASHBOARD =====
-function setGreeting() {
-  const h = new Date().getHours();
-  const g = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
-  const name = currentUser?.user_metadata?.full_name?.split(' ')[0] || '';
-  document.getElementById('dashGreeting').textContent = `${g}${name ? ' ' + name : ''} 👋`;
-  updateStats();
-}
-
-function updateStats() {
-  const done = Object.keys(stageOutputs).length;
-  document.getElementById('statDone').textContent = `${done}/7`;
-  document.getElementById('statStatus').textContent = done === 0 ? 'Not started' : done === 7 ? 'Complete ✅' : 'In progress';
-  document.getElementById('statPlan').textContent = isPro ? 'Pro ⚡' : 'Free';
-  document.getElementById('statPlanSub').textContent = isPro ? 'All stages unlocked' : 'Stage 1 available';
-  if (!isPro) document.getElementById('dashUpgradeCard').style.display = 'block';
-  else document.getElementById('dashUpgradeCard').style.display = 'none';
-}
-
-function showDashSection(id) {
+function showDashSection(section) {
   document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
-  document.getElementById(`sec-${id}`)?.classList.add('active');
-  document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
-  const map = {home:'snHome',stages:'snStages',strategy:'snStrategy',remix:'snRemix',tracker:'snTracker',trends:'snTrends'};
-  if (map[id]) document.getElementById(map[id])?.classList.add('active');
-
-  if (id === 'strategy') renderStrategy();
-  if (id === 'tracker') renderTrackerHistory();
-  if (id === 'stages') {
-    document.getElementById('stageViewWrap').classList.remove('show');
-    document.getElementById('stagesListWrap').style.display = 'block';
-    renderDashStages2();
-  }
+  document.querySelectorAll('.dash-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('dash-' + section).classList.add('active');
+  event.target.closest('.dash-nav-item').classList.add('active');
 }
 
-function renderDashStages() {
-  const list = document.getElementById('dashStagesList');
-  list.innerHTML = renderStagesHTML();
+function showStageView(stage) {
+  document.getElementById('dash-home').classList.remove('active');
+  document.getElementById('dash-stage-view').classList.add('show');
+  document.getElementById('stage-title').textContent = stage === 'niche' ? 'Your niche strategy' : 'Audience mapping';
 }
 
-function renderDashStages2() {
-  const list = document.getElementById('dashStagesList2');
-  list.innerHTML = renderStagesHTML(true);
-}
-
-function renderStagesHTML(forStagesSection) {
-  return stages.map(stage => {
-    const done = !!stageOutputs[stage.id];
-    const locked = !stage.free && !isPro;
-    const onclick = locked ? `showDashSection('upgrade')` : `openDashStage(${stage.id})`;
-    const badge = done ? `<div class="dstage-badge db-done">✓ Done</div>` : locked ? `<div class="dstage-badge db-lock">🔒 Pro</div>` : `<div class="dstage-badge db-start">Start →</div>`;
-    return `<div class="dstage ${done?'done':''} ${locked?'locked':''}" onclick="${onclick}">
-      <div class="dstage-icon">${stage.icon}</div>
-      <div class="dstage-content">
-        <div class="dstage-name">${stage.name}</div>
-        <div class="dstage-desc">${stage.desc}</div>
-      </div>
-      ${badge}
-    </div>`;
-  }).join('');
-}
-
-function openDashStage(num) {
-  const stage = stages[num-1];
-  showDashSection('stages');
-
-  let fieldsHTML = '';
-  stage.fields.forEach(f => {
-    const saved = stageData[num]?.[f.id] || '';
-    if (f.type === 'input') {
-      fieldsHTML += `<div class="tf-group"><label class="tf-label">${f.label}</label><input type="text" class="tf-input" id="df_${f.id}" placeholder="${f.placeholder||''}" value="${saved}"></div>`;
-    } else if (f.type === 'textarea') {
-      fieldsHTML += `<div class="tf-group"><label class="tf-label">${f.label}</label><textarea class="tf-input" id="df_${f.id}" placeholder="${f.placeholder||''}">${saved}</textarea></div>`;
-    } else if (f.type === 'select') {
-      const opts = f.options.map(o => `<option value="${o}" ${saved===o?'selected':''}>${o}</option>`).join('');
-      fieldsHTML += `<div class="tf-group"><label class="tf-label">${f.label}</label><select class="tf-input" id="df_${f.id}">${opts}</select></div>`;
-    }
-  });
-
-  const existing = stageOutputs[num];
-
-  const view = document.getElementById('stageViewWrap');
-  document.getElementById('stagesListWrap').style.display = 'none';
-  view.classList.add('show');
-  view.innerHTML = `
-    <div class="back-row">
-      <button class="back-btn" onclick="backToStagesList()">← Back</button>
-      <div class="dash-stage-title">Stage ${num} — ${stage.name}</div>
-    </div>
-    <div class="form-card">
-      ${fieldsHTML}
-      <button class="gen-btn" id="dGenBtn" onclick="generateDashStage(${num})">
-        <span id="dGenText">✦ Generate my ${stage.name.toLowerCase()}</span>
-        <div class="spinner" id="dGenSpinner" style="display:none"></div>
-      </button>
-      <div class="loading-bar" id="dLoadBar"><div class="lspinner"></div><span id="dLoadText">Building your strategy...</span></div>
-    </div>
-    <div class="output-wrap ${existing?'show':''}" id="dOutputWrap">
-      <div class="output-tag"><div class="rblink"></div> Your results</div>
-      <div id="dOutputBlocks">${existing ? parseBlocks(existing) : ''}</div>
-    </div>
-    ${existing ? `<div class="edit-nudge" style="margin-bottom:16px"><span>💡</span><span>Add your personal story and specific details before using this. That human layer is what makes content last beyond 3 months.</span></div>` : ''}
-    <button class="save-btn" onclick="saveDashStage(${num})">Save and mark complete ✓</button>
-  `;
-}
-
-function backToStagesList() {
-  document.getElementById('stageViewWrap').classList.remove('show');
-  document.getElementById('stagesListWrap').style.display = 'block';
-  renderDashStages2();
-  renderDashStages();
-  updateStats();
-}
-
-function collectDashData(num) {
-  const stage = stages[num-1];
-  const data = {};
-  stage.fields.forEach(f => {
-    const el = document.getElementById(`df_${f.id}`);
-    if (el) data[f.id] = el.value;
-  });
-  stageData[num] = data;
-  if (num === 1) {
-    brandContext = { niche:data.passion, audience:data.audience, platform:data.platform };
-    localStorage.setItem('csai_brand', JSON.stringify(brandContext));
-  }
-  localStorage.setItem('csai_data', JSON.stringify(stageData));
-  return data;
-}
-
-const dashFallbacks = {
-  1:`EXACT NICHE:\nBudget meal prep for busy working adults who want to eat healthy without spending hours or lots of money.\n\nWHY THIS WORKS:\n• Growing 240% in search interest since 2023\n• Very few creators combine all three: meal prep, budgeting, and time-saving\n• Audience buys products and tools actively\n\nPOSITIONING STATEMENT:\n"I help busy adults eat well without spending hours in the kitchen or breaking the bank"\n\nWHAT TO AVOID:\n• Being too broad — stay in your lane\n• Copying others without a clear angle\n\nFIRST CONTENT IDEA:\n"I meal prepped for 5 days in 45 minutes and spent under $30 — here is exactly what I made"`,
-  2:`CONTENT PILLARS:\n• Quick Recipes (under 30 min) — draws in new viewers\n• Budget Breakdowns — shows the real numbers\n• Meal Prep Walkthroughs — step by step follow-along\n• Kitchen Hacks — saves time and money\n\nWEEKLY MIX:\nMonday: Educational tip\nWednesday: Recipe or prep video\nFriday: Budget breakdown\nSunday: Motivational or relatable\n\nSIGNATURE SERIES:\n"$50 Sunday Prep" — weekly meal prep for under $50\n\nVOICE RULES:\n• Talk like texting a friend\n• Always include specific numbers\n• Show real moments — the mess, the fail\n• End with one action they can take today`,
-  3:`LONG CAPTION:\nI used to spend $400 a month on food and still had nothing to eat.\n\nNow I spend $120. I eat better. And I only cook once a week.\n\nEvery Sunday I prep for 45 minutes. Three proteins. Two grains. Four vegetables. Mix and match all week.\n\nThis week I made lemon chicken, brown rice, and roasted broccoli for $34.\n\nSave this for next Sunday 👇\n\nSHORT CAPTION:\nI spent $34 and did not have to cook for 5 days. Here is what I made.\n\nHASHTAGS:\n#mealprep #budgetmeals #mealprepsunday #healthyonabudget #budgetfriendly #eathealthy #mealplan #cheapmeals\n\nFIRST LINE OPTIONS:\n1. I spent $34 and did not cook for 5 days\n2. The routine that saves me $280 a month\n3. Nobody told me eating healthy could be this cheap`,
-  4:`TOP 10 HOOKS:\n1. I spent $34 and did not cook for 5 days\n2. This is why you are always hungry an hour after eating\n3. The meal prep mistake that wastes your money\n4. POV: You finally figured out eating healthy on a budget\n5. I thought meal prep took all day — it took 45 minutes\n6. Stop buying these 5 groceries\n7. What $120 a month of groceries looks like\n8. The reason your meal prep fails every week\n9. I calculated my eating out costs — the number shocked me\n10. How I went from $400 to $120 on food\n\nHOOK FORMULA:\nSpecific number + unexpected angle + implied solution\n\nTHUMBNAIL TEXT:\n1. "I ate for $34 for a full week"\n2. "$120/month grocery budget"\n3. "45 min meal prep changed everything"`,
-  5:`WEEKLY SCHEDULE:\nMonday: Motivational or relatable post\nWednesday: Main educational or recipe content\nFriday: Budget breakdown or quick tip\n\nBEST POSTING TIMES:\nInstagram: Tue-Thu 6-9am and 6-9pm local time\nTikTok: Mon, Wed, Fri at 7am, 12pm, 7pm\n\nBATCHING SYSTEM:\nStep 1: 3 topics — 15 min\nStep 2: Film all 3 — 60-90 min\nStep 3: Edit — 60-90 min\nStep 4: Captions and schedule — 30 min\nTotal: 3-4 hours for a full week\n\nTHE NON-NEGOTIABLE:\nPost same days every week. Consistency beats everything.`,
-  6:`REVENUE PLAN:\n1. Digital product — meal plan PDF template at $17-37. Create once, sell forever.\n2. Affiliate marketing — link to products you actually use. 5-15% commission.\n3. Newsletter — own your audience. Email list is the only platform you control.\n4. Brand deals — at 10K+ followers, food and kitchen brands will pay $500-2,000 per post.\n\nFIRST DOLLAR PLAN:\nWeek 1: Create a simple PDF meal plan template in Canva. Price at $17.\nWeek 2: 3 posts showing the value of having a meal plan.\nWeek 3: Launch with 72-hour discount window.\nExpected: 5-20 sales in first week.\n\nOWNED REVENUE FIRST:\nIn 2026, platform payouts are unpredictable. Build your email list from day one. Every piece of content should have a reason to click to your email opt-in.`,
-  7:`TOOL STACK:\n• Canva free — thumbnails, carousels, graphics\n• CapCut free — edit videos on phone\n• Buffer free (3 channels) — schedule posts\n• Claude or ChatGPT free — caption drafts\n• Google Sheets free — content calendar\n• Beehiiv or Kit free tier — email newsletter\n\nCONTENT SYSTEM:\nStep 1 — Idea: 5 min\nStep 2 — Script via AI: 10 min\nStep 3 — Film: 15-20 min\nStep 4 — Edit: 20-30 min\nStep 5 — Caption: 10 min\nStep 6 — Schedule: 5 min\nTotal: ~65-70 min per piece\n\nSTART EMAIL EARLY:\nSet up a free Beehiiv or Kit newsletter this week. Add the sign-up link to every piece of content. Your email list is the only audience you truly own.`
-};
-
-async function generateDashStage(num) {
-  const data = collectDashData(num);
-  const stage = stages[num-1];
-  document.getElementById('dGenBtn').disabled = true;
-  document.getElementById('dGenText').textContent = 'Generating...';
-  document.getElementById('dGenSpinner').style.display = 'block';
-  document.getElementById('dLoadBar').classList.add('show');
-  document.getElementById('dOutputWrap').classList.remove('show');
-
-  const ctx = brandContext;
-  const prompts = {
-    1:`You help content creators find their niche. Be specific, honest, practical.\n\nCreator: passion=${data.passion}, audience=${data.audience}, platform=${data.platform}, unique=${data.uniqueness}\n\nGive: EXACT NICHE, WHY THIS WORKS (3 reasons), POSITIONING STATEMENT, WHAT TO AVOID (2 mistakes), FIRST CONTENT IDEA\n\nUse ALL-CAPS headers followed by colons. Be direct. No buzzwords.`,
-    2:`You are a content strategist.\n\nNiche:${ctx.niche}, Audience:${ctx.audience}, Format:${data.format}, Frequency:${data.frequency}, Voice:${data.voice}, Topics:${data.pillars}\n\nGive: CONTENT PILLARS, WEEKLY MIX (day by day), SIGNATURE SERIES, VOICE RULES (4 rules), WHAT TO STOP DOING\n\nALL-CAPS headers. Practical only.`,
-    3:`You write captions that get real engagement. Human not corporate.\n\nNiche:${ctx.niche}, Audience:${ctx.audience}, Platform:${ctx.platform}, Topic:${data.topic}, Goal:${data.goal}, CTA:${data.cta}\n\nWrite: LONG CAPTION (100-150 words, strong first line, short paragraphs, CTA at end), SHORT CAPTION (under 30 words), HASHTAGS (10-15 mixed), FIRST LINE OPTIONS (5 different)`,
-    4:`You write viral hooks.\n\nCreator:${ctx.niche} for ${ctx.audience}, Platform:${ctx.platform}, Topic:${data.hookTopic}, Format:${data.hookType}, Emotion:${data.emotion}\n\nWrite: TOP 10 HOOKS (numbered, genuinely different), HOOK FORMULA, THUMBNAIL TEXT (3 options), WHAT NOT TO DO`,
-    5:`Help build a posting schedule.\n\nNiche:${ctx.niche}, Platform:${ctx.platform}, Time:${data.hours}, Style:${data.workstyle}, Audience:${data.timezone}, Goal:${data.goal}\n\nGive: WEEKLY SCHEDULE (day by day, specific), BEST POSTING TIMES (actual times), BATCHING SYSTEM (step by step), THE NON-NEGOTIABLE`,
-    6:`Help make money from content. Focus on OWNED revenue — email, digital products, memberships.\n\nNiche:${ctx.niche}, Platform:${ctx.platform}, Current:${data.currentRevenue}, Preferred:${data.preferredWay}, Audience:${data.followers}, Target:${data.target}\n\nBuild: REVENUE PLAN (top streams with estimates), OWNED REVENUE FIRST (why email and digital products beat unpredictable platform payouts), FIRST DOLLAR PLAN (step by step), 12 MONTH ROADMAP`,
-    7:`Help save time with tools.\n\nNiche:${ctx.niche}, Tech:${data.techLevel}, Budget:${data.budget}, Problem:${data.biggestProblem}, Priority:${data.priority}\n\nBuild: TOOL STACK (exact tools, cost, purpose), CONTENT SYSTEM (step by step with times), START EMAIL EARLY (why email list matters and how to start free)\n\nInclude free alternatives. Recommend Beehiiv or Kit for email.`
-  };
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:900, messages:[{role:'user',content:prompts[num]}] })
-    });
-    const d = await res.json();
-    const text = d.content?.map(c=>c.text||'').join('') || dashFallbacks[num];
-    stageOutputs[num] = text;
-    localStorage.setItem('csai_outputs', JSON.stringify(stageOutputs));
-    document.getElementById('dOutputBlocks').innerHTML = parseBlocks(text);
-    document.getElementById('dOutputWrap').classList.add('show');
-  } catch {
-    stageOutputs[num] = dashFallbacks[num];
-    localStorage.setItem('csai_outputs', JSON.stringify(stageOutputs));
-    document.getElementById('dOutputBlocks').innerHTML = parseBlocks(dashFallbacks[num]);
-    document.getElementById('dOutputWrap').classList.add('show');
-  }
-
-  document.getElementById('dLoadBar').classList.remove('show');
-  document.getElementById('dGenBtn').disabled = false;
-  document.getElementById('dGenText').textContent = '✦ Regenerate';
-  document.getElementById('dGenSpinner').style.display = 'none';
-}
-
-function saveDashStage(num) {
-  collectDashData(num);
-  showToast(`✅ Stage ${num} saved`);
-  backToStagesList();
-}
-
-// ===== STRATEGY + PDF =====
-function renderStrategy() {
-  let html = '';
-  for (let i = 1; i <= 7; i++) {
-    if (stageOutputs[i]) {
-      html += `<div class="sb-block"><div class="sb-head"><div class="sb-icon">${stageIcons[i-1]}</div><div class="sb-name">${stageNames[i-1]}</div></div><div class="sb-body">${stageOutputs[i]}</div></div>`;
-    }
-  }
-  if (!html) html = '<div style="text-align:center;padding:60px;color:var(--muted);font-size:14px">Complete stages to see your strategy here.</div>';
-  document.getElementById('strategyBlocks').innerHTML = html;
-}
-
-function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-  const W = doc.internal.pageSize.getWidth();
-  const H = doc.internal.pageSize.getHeight();
-  const m = 22;
-  const cw = W - m*2;
-
-  // Cover
-  doc.setFillColor(15,15,14); doc.rect(0,0,W,H,'F');
-  doc.setFillColor(27,79,255); doc.rect(0,0,5,H,'F');
-  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(34);
-  doc.text('CSAI', m+8, 52);
-  doc.setFont('helvetica','normal'); doc.setFontSize(13); doc.setTextColor(150,150,145);
-  doc.text('Your Content Strategy Plan', m+8, 64);
-  doc.setFontSize(10); doc.setTextColor(90,90,86);
-  if (brandContext.niche) doc.text(`Niche: ${brandContext.niche}`, m+8, 82);
-  if (brandContext.platform) doc.text(`Platform: ${brandContext.platform}`, m+8, 91);
-  doc.text(`Created: ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}`, m+8, 100);
-  doc.setFillColor(27,79,255); doc.rect(m+8,112,36,1,'F');
-  doc.setFontSize(8); doc.setTextColor(60,60,56); doc.text('csai.vercel.app', W/2, H-12, {align:'center'});
-
-  // Stages
-  for (let i = 1; i <= 7; i++) {
-    const out = stageOutputs[i];
-    if (!out) continue;
-    doc.addPage();
-    doc.setFillColor(255,255,255); doc.rect(0,0,W,H,'F');
-    doc.setFillColor(27,79,255); doc.rect(0,0,4,H,'F');
-    let y = m+6;
-    doc.setFillColor(238,242,255); doc.roundedRect(m+6,y-4,cw-6,28,3,3,'F');
-    doc.setTextColor(27,79,255); doc.setFont('helvetica','bold'); doc.setFontSize(8);
-    doc.text(`STAGE ${i} OF 7`, m+12, y+4);
-    doc.setTextColor(15,15,14); doc.setFontSize(15);
-    doc.text(`${stageIcons[i-1]}  ${stageNames[i-1]}`, m+12, y+17);
-    y += 38;
-    doc.setDrawColor(228,226,220); doc.setLineWidth(0.3); doc.line(m+6,y,W-m,y);
-    y += 8;
-    doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
-    const lines = doc.splitTextToSize(out, cw-8);
-    lines.forEach(line => {
-      if (y > H-m) {
-        doc.addPage(); doc.setFillColor(255,255,255); doc.rect(0,0,W,H,'F');
-        doc.setFillColor(27,79,255); doc.rect(0,0,4,H,'F'); y = m+8;
-      }
-      const isH = line === line.toUpperCase() && line.includes(':') && line.length < 52;
-      doc.setFont('helvetica', isH ? 'bold' : 'normal');
-      doc.setTextColor(isH ? 27 : 60, isH ? 79 : 60, isH ? 255 : 56);
-      doc.text(line, m+6, y); y += isH ? 7 : 5.5;
-    });
-    doc.setTextColor(180,178,172); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
-    doc.text(`CS AI — Stage ${i} of 7`, W/2, H-10, {align:'center'});
-  }
-
-  const name = currentUser?.user_metadata?.full_name || 'my';
-  doc.save(`${name.split(' ')[0].toLowerCase().replace(/[^a-z]/g,'')}-content-strategy.pdf`);
-  showToast('📄 PDF downloaded');
-}
-
-// ===== REMIX =====
-function selectRemixTarget(el, target) {
-  document.querySelectorAll('.remix-target').forEach(t => t.classList.remove('selected'));
-  el.classList.add('selected');
-  remixTarget = target;
-}
-
-async function runRemix() {
-  const content = document.getElementById('remixInput').value.trim();
-  if (!content) { showToast('Paste some content first'); return; }
-
-  document.getElementById('remixBtn').disabled = true;
-  document.getElementById('remixBtn').textContent = 'Remixing...';
-  document.getElementById('remixResult').classList.remove('show');
-
-  const prompt = `You are an expert at repurposing social media content. Take this content and rewrite it specifically optimized for ${remixTarget}. Keep the core message. Change the format, length, tone, and structure to fit that platform perfectly.\n\nOriginal content:\n${content}\n\nRewrite it as a ${remixTarget}. Make it feel native to that platform. Do not add explanation — just write the remixed content.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, messages:[{role:'user',content:prompt}] })
-    });
-    const d = await res.json();
-    const text = d.content?.map(c=>c.text||'').join('') || `Here is your content remixed for ${remixTarget}.\n\n${content}`;
-    document.getElementById('remixResultLabel').textContent = `Remixed for ${remixTarget}`;
-    document.getElementById('remixResultText').textContent = text;
-    document.getElementById('remixResult').classList.add('show');
-  } catch {
-    document.getElementById('remixResultLabel').textContent = `Remixed for ${remixTarget}`;
-    document.getElementById('remixResultText').textContent = `[Demo] Here is your ${remixTarget} version of the content. Connect the API to get real AI remixes.`;
-    document.getElementById('remixResult').classList.add('show');
-  }
-
-  document.getElementById('remixBtn').disabled = false;
-  document.getElementById('remixBtn').textContent = 'Remix it →';
-}
-
-// ===== TRACKER =====
-function saveTrackerEntry() {
-  const followers = document.getElementById('trackFollowers').value;
-  const revenue = document.getElementById('trackRevenue').value;
-  const posts = document.getElementById('trackPosts').value;
-  const best = document.getElementById('trackBest').value;
-
-  if (!followers && !revenue) { showToast('Enter at least followers or revenue'); return; }
-
-  const entry = {
-    date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}),
-    followers: followers || '—',
-    revenue: revenue || '—',
-    posts: posts || '—',
-    best: best || '—'
-  };
-
-  trackerEntries.unshift(entry);
-  if (trackerEntries.length > 52) trackerEntries.pop();
-  localStorage.setItem('csai_tracker', JSON.stringify(trackerEntries));
-
-  document.getElementById('trackFollowers').value = '';
-  document.getElementById('trackRevenue').value = '';
-  document.getElementById('trackPosts').value = '';
-  document.getElementById('trackBest').value = '';
-
-  renderTrackerHistory();
-  showToast('✅ Progress saved');
-}
-
-function renderTrackerHistory() {
-  if (!trackerEntries.length) return;
-  document.getElementById('trackerEntries').innerHTML = trackerEntries.map(e => `
-    <div class="tracker-entry">
-      <div class="te-date">${e.date}</div>
-      <div class="te-vals">
-        <div class="te-val">👥 <strong>${e.followers}</strong></div>
-        <div class="te-val">💰 <strong>$${e.revenue}</strong></div>
-        <div class="te-val">📝 <strong>${e.posts}</strong> posts</div>
-      </div>
-    </div>`).join('');
-}
-
-// ===== TRENDS =====
-async function runTrends() {
-  const niche = document.getElementById('trendNiche').value.trim() || brandContext.niche || 'content creation';
-  document.getElementById('trendBtn').disabled = true;
-  document.getElementById('trendBtn').textContent = 'Finding...';
-  document.getElementById('trendLoading').classList.add('show');
-  document.getElementById('trendResult').classList.remove('show');
-
-  const prompt = `You are a content strategist who tracks what is working on social media in 2026.\n\nNiche: ${niche}\n\nGive 5 specific content ideas that would perform well THIS WEEK for a creator in this niche. For each idea:\n- The hook (first line or video opener)\n- The format (reel, carousel, talking head, etc)\n- Why it works right now in 2026\n\nNumber each idea. Be specific to the niche. No generic advice.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:700, messages:[{role:'user',content:prompt}] })
-    });
-    const d = await res.json();
-    const text = d.content?.map(c=>c.text||'').join('') || `5 content ideas for ${niche} this week:\n\n1. Show your exact weekly routine with timestamps\n2. "The mistake I made so you don't have to" — vulnerability content\n3. React to a common myth in your niche\n4. Before and after — show a transformation\n5. Answer the question you get asked most often`;
-    document.getElementById('trendResultText').textContent = text;
-    document.getElementById('trendResult').classList.add('show');
-  } catch {
-    document.getElementById('trendResultText').textContent = `5 content ideas for ${niche} this week:\n\n1. Show your exact weekly routine with timestamps\n2. "The mistake I made so you don't have to"\n3. React to a common myth in your niche\n4. Before and after transformation\n5. Answer the question you get asked most often`;
-    document.getElementById('trendResult').classList.add('show');
-  }
-
-  document.getElementById('trendLoading').classList.remove('show');
-  document.getElementById('trendBtn').disabled = false;
-  document.getElementById('trendBtn').textContent = 'Get ideas →';
+function hideDashStageView() {
+  document.getElementById('dash-stage-view').classList.remove('show');
+  document.getElementById('dash-home').classList.add('active');
 }
 
 // ===== PRICING =====
-function setPricing(mode) {
-  pricingMode = mode;
-  document.getElementById('ptMonthly').classList.toggle('active', mode === 'monthly');
-  document.getElementById('ptYearly').classList.toggle('active', mode === 'yearly');
-  if (mode === 'yearly') {
-    document.getElementById('priceAmt').innerHTML = '<sup>$</sup>149';
-    document.getElementById('pricePeriod').textContent = 'per year · save $79';
-  } else {
-    document.getElementById('priceAmt').innerHTML = '<sup>$</sup>19';
-    document.getElementById('pricePeriod').textContent = 'per month · cancel anytime';
-  }
+function setPricingPeriod(period) {
+  const opts = document.querySelectorAll('.pt-opt');
+  opts.forEach(opt => opt.classList.remove('active'));
+  event.target.classList.add('active');
 }
 
-function handleUpgrade(plan) {
-  const link = plan === 'monthly' ? LS_MONTHLY : LS_YEARLY;
-  if (link.startsWith('YOUR_')) {
-    showToast('💳 Set up Lemon Squeezy to accept payments');
-    return;
-  }
-  window.open(link, '_blank');
+function startTrial() {
+  showTrialPage();
+  window.scrollTo(0, 0);
 }
-
-// ===== TOAST =====
-function showToast(msg) {
-  document.querySelector('.toast')?.remove();
-  const t = document.createElement('div');
-  t.className = 'toast'; t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
-}
-
-// ===== SCROLL ANIMATIONS =====
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold:0.08 });
-
-document.querySelectorAll('.step-block,.insight-card,.price-card,.stage-row').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(14px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  io.observe(el);
-});
-
-// Password visibility toggle
-const EYE_OPEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-const EYE_CLOSED = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-
-function togglePw(inputId, btnId) {
-  const input = document.getElementById(inputId);
-  const btn = document.getElementById(btnId);
-  if (!input || !btn) return;
-  const isHidden = input.type === 'password';
-  input.type = isHidden ? 'text' : 'password';
-  btn.innerHTML = isHidden ? EYE_CLOSED : EYE_OPEN;
-  btn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
-  input.focus();
-}
-
-// ===== INIT =====
-document.getElementById('landing').style.display = 'block';
-document.getElementById('trialPage').style.display = 'none';
-document.getElementById('dashboard').style.display = 'none';
 </script>
+
 </body>
 </html>
